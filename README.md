@@ -17,7 +17,7 @@
 
 ## Extra Ideas:
 - moving background to make it look like moving through space
-- Formations: different layotu for aliens for different levels
+- Formations: different layout for aliens for different levels
 - Boss:
 - powerups:
   - shielding
