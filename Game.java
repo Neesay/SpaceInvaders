@@ -1,20 +1,18 @@
 
 /**
- * Write a description of class Game here.
+ * A Space Invaders simulator that renders the game on GameDisplay class.
  *
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Game
-{
+public class Game {
     // instance variables - replace the example below with your own
     private int x;
 
     /**
      * Constructor for objects of class Game
      */
-    public Game()
-    {
+    public Game() {
         // initialise instance variables
         x = 0;
     }
@@ -25,8 +23,7 @@ public class Game
      * @param  y  a sample parameter for a method
      * @return    the sum of x and y
      */
-    public int sampleMethod(int y)
-    {
+    public int sampleMethod(int y) {
         // put your code here
         return x + y;
     }

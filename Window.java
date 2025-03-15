@@ -1,13 +1,10 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -22,7 +19,7 @@ public class Window extends Application {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
     private static final String GAME_TITLE = "Space Invaders";
-    private static final String AUTHORS = "Yusuf Rahman";
+    private static final String AUTHORS = "Yusuf Rahman,"; // Add your name here
 
     /**
      * Create a window for the game.
@@ -62,7 +59,7 @@ public class Window extends Application {
         stage.show();
 
         // Start the game loop
-        gameDisplay.startAnimation();
+        stage.show();
     }
 
     /**
