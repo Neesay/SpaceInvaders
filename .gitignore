@@ -4,3 +4,5 @@
 *.xml
 *.tmp
 *.iml
+
+.vscode/

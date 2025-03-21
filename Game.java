@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+import javafx.scene.paint.Color;
 
 /**
  * A Space Invaders simulator that renders the game on GameDisplay class.
@@ -6,25 +9,26 @@
  * @version (a version number or a date)
  */
 public class Game {
-    // instance variables - replace the example below with your own
-    private int x;
+
+    private List<Barrier> barriers;
 
     /**
-     * Constructor for objects of class Game
+     * Constructor initialises the begining game state.
      */
     public Game() {
-        // initialise instance variables
-        x = 0;
+        initialiseBarriers(1);
     }
 
     /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
+     * Initialise the number of barriers at the beginning of the game.
      */
-    public int sampleMethod(int y) {
-        // put your code here
-        return x + y;
+    public void initialiseBarriers(int numberOfBarriers) {
+        List<Barrier> barriers = new ArrayList<>();
+        for (int i = 0; i < numberOfBarriers; i++) {
+            barriers.add(new Barrier(Color.GREEN));
+        }
+        this.barriers = barriers;
     }
+
+    public List<Barrier> getBarriers() { return barriers; }
 }

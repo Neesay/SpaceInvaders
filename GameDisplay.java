@@ -12,6 +12,7 @@ public class GameDisplay {
 
     private final Canvas canvas;
     private final GraphicsContext gc;
+    private Game game;
 
     /**
      * Constructor for objects of class GameDisplay
@@ -19,6 +20,7 @@ public class GameDisplay {
     public GameDisplay(int width, int height) {
         canvas = new Canvas(width, height);
         gc = canvas.getGraphicsContext2D();
+        game = new Game();
         drawInitialScene();
     }
 
@@ -27,16 +29,19 @@ public class GameDisplay {
      *
      */
     private void drawInitialScene() {
-        gc.setFill(Color.LIGHTGRAY);
+        gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        // TESTING - Draw a single triangle in the center to see how rendering works
-        gc.setFill(Color.BLUE);
-        double[] xPoints = {400, 350, 450};
-        double[] yPoints = {200, 350, 350};
-        gc.fillPolygon(xPoints, yPoints, 3);
+        // Draw the barriers on the canvas
+        drawBarriers();
     }
 
+    private void drawBarriers() {
+        for (Barrier barrier : game.getBarriers()) {
+            barrier.place(350, 400, 100, 150, 80);
+            barrier.render(gc);
+        }
+    }
 
     public Canvas getCanvas() { return canvas; }
 }
