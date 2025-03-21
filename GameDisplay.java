@@ -1,6 +1,7 @@
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import java.util.List;
 
 /**
  * The game display and graphics will be handled here and rendered to the window class.
@@ -36,9 +37,19 @@ public class GameDisplay {
         drawBarriers();
     }
 
+    /**
+     * Draw the barriers evenly across the canvas.
+     */
     private void drawBarriers() {
-        for (Barrier barrier : game.getBarriers()) {
-            barrier.place(350, 400, 100, 150, 80);
+        List<Barrier> barriers = game.getBarriers();
+        int barrierCount = barriers.size();
+        double spacing = (canvas.getWidth() - (barrierCount * 100)) / (barrierCount + 1);
+        double y = 400;
+
+        for (int i=0; i<barrierCount; i++) {
+            Barrier barrier = barriers.get(i);
+            double x = spacing + i * (100 + spacing);
+            barrier.place(x, y);
             barrier.render(gc);
         }
     }

@@ -8,8 +8,11 @@ import javafx.scene.paint.Color;
  * @version 1.0
  */
 public class Barrier {
-  private double x, y, widthTop, widthBottom, height;
   private Color color;
+  private final double WIDTH_TOP = 70;
+  private final double WIDTH_BOTTOM = 110;
+  private final double HEIGHT = 60;
+  private double x, y;
   private int durability = 3;
   
   /**
@@ -22,20 +25,17 @@ public class Barrier {
   /**
    * Place the barrier at the given position with the given dimensions.
    */
-  public void place(double x, double y, double widthTop, double widthBottom, double height) {
+  public void place(double x, double y) {
     this.x = x;
     this.y = y;
-    this.widthTop = widthTop;
-    this.widthBottom = widthBottom;
-    this.height = height;
   }
 
   /**
    * Render the barrier on the given canvas.
    */
   public void render(GraphicsContext gc) {
-      double[] xPoints = {x, x + widthTop, x + widthBottom, x - (widthBottom - widthTop)};
-      double[] yPoints = {y, y, y + height, y + height};
+      double[] xPoints = {x, x + WIDTH_TOP, x + WIDTH_BOTTOM, x - (WIDTH_BOTTOM - WIDTH_TOP)};
+      double[] yPoints = {y, y, y + HEIGHT, y + HEIGHT};
       
       gc.setFill(color);
       gc.fillPolygon(xPoints, yPoints, 4);

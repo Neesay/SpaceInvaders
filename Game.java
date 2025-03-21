@@ -10,13 +10,14 @@ import javafx.scene.paint.Color;
  */
 public class Game {
 
+    private static final int NUMBER_OF_BARRIERS = 3;
     private List<Barrier> barriers;
 
     /**
      * Constructor initialises the begining game state.
      */
     public Game() {
-        initialiseBarriers(1);
+        initialiseBarriers(NUMBER_OF_BARRIERS);
     }
 
     /**
