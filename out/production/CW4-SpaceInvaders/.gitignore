@@ -1,0 +1,6 @@
+*.class
+*.ctxt
+*.bluej
+*.xml
+*.tmp
+*.iml

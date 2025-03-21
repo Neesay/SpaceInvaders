@@ -6,12 +6,13 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
 /**
  * A view of the game. This class is responsible for displaying the game state.
  * Manages the window and the canvas.
  *
- * @author Yusuf Rahman
+ * @author Yusuf Rahman and Yaseen Alam
  * @version 1.0
  */
 public class Window extends Application {
@@ -19,7 +20,7 @@ public class Window extends Application {
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
     private static final String GAME_TITLE = "Space Invaders";
-    private static final String AUTHORS = "Yusuf Rahman,"; // Add your name here
+    private static final String AUTHORS = "Yusuf Rahman,";
 
     /**
      * Create a window for the game.
@@ -45,8 +46,9 @@ public class Window extends Application {
 
         menuBar.getMenus().addAll(fileMenu, helpMenu);
 
-        // Game Display Panel
-        GameDisplay gameDisplay = new GameDisplay(WIDTH, HEIGHT);
+        // Buttons
+        Button startButton = new Button("Start");
+        startButton.setOnAction(e -> startGame());
 
         // Layout
         BorderPane root = new BorderPane();
@@ -71,6 +73,10 @@ public class Window extends Application {
         alert.setHeaderText("Game Title: " + GAME_TITLE);
         alert.setContentText("Authors: " + AUTHORS + "\nVersion: 1.0");
         alert.showAndWait();
+    }
+
+    private void startGame() {
+        GameDisplay gameDisplay = new GameDisplay(WIDTH, HEIGHT);
     }
 
     /**
