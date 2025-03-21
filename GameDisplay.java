@@ -1,6 +1,8 @@
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * The game display and graphics will be handled here and rendered to the window class.
@@ -12,6 +14,7 @@ public class GameDisplay {
 
     private final Canvas canvas;
     private final GraphicsContext gc;
+    
 
     /**
      * Constructor for objects of class GameDisplay
@@ -27,7 +30,7 @@ public class GameDisplay {
      *
      */
     private void drawInitialScene() {
-        gc.setFill(Color.LIGHTGRAY);
+        gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         // TESTING - Draw a single triangle in the center to see how rendering works

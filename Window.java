@@ -7,6 +7,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+
+
 /**
  * A view of the game. This class is responsible for displaying the game state.
  * Manages the window and the canvas.
@@ -16,10 +18,12 @@ import javafx.stage.Stage;
  */
 public class Window extends Application {
 
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 1000;
+    private static final int HEIGHT = 800;
     private static final String GAME_TITLE = "Space Invaders";
-    private static final String AUTHORS = "Yusuf Rahman,"; // Add your name here
+    private static final String AUTHORS = "Aditya Ranjan"; 
+    private static final int PLAYER_SIZE = 60;
+
 
     /**
      * Create a window for the game.
@@ -57,7 +61,8 @@ public class Window extends Application {
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setScene(scene);
         stage.show();
-
+        
+        
         // Start the game loop
         stage.show();
     }
