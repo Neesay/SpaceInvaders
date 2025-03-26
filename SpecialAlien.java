@@ -8,11 +8,13 @@ public class SpecialAlien extends Alien{
      * @param height
      * @param width
      */
-    public SpecialAlien(int x, int y, String path, int height, int width) {
+    public SpecialAlien(double x, double y, String path, int height, int width) {
         super(x, y, path, height, width);
     }
 
-    public void shoot() {
-
+    @Override
+    public void move(){
+        this.setX(this.getX() - 1.2);
+        System.out.println("Alien moved!");
     }
 }

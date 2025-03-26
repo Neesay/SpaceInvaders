@@ -1,12 +1,7 @@
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
-import javafx.animation.TranslateTransition;
-import javafx.scene.Node;
-import javafx.util.Duration;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.animation.AnimationTimer;
@@ -14,10 +9,9 @@ import javafx.animation.AnimationTimer;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
+import java.util.Random;
 
 /**
  * The game display and graphics will be handled here and rendered to the window class.
@@ -29,34 +23,27 @@ public class GameDisplay {
 
     private final Canvas canvas;
     private final GraphicsContext gc;
-    private final long shoot_interval = 1000000000;
-    private Set <KeyCode> keysPressed = new HashSet<>();
+    private final Set <KeyCode> keysPressed;
     private Font gameFont;
-    private Player player;
-    private AlienSwarm alienSwarm;
-    private List <Laser> Lasers = new ArrayList<>();
-    private List <Alien> Aliens = new ArrayList<>();
-    private List <List<Alien>> AliensPerCol = new ArrayList<>();
-    private AnimationTimer gameLoop;
-    private Random random = new Random();
-    private long last_shot_time = 0;
-    private boolean move_down_next = false;
+    private final Player player;
+    private final AlienSwarm alienSwarm;
+    private List <Laser> Lasers;
 
     /**
      * Constructor for objects of class GameDisplay
      */
     public GameDisplay(int width, int height) {
-        alienSwarm = new AlienSwarm();
-
-        for (int i = 0; i < 8; i++) {
-            AliensPerCol.add(new ArrayList<>());
-        }
-        
         canvas = new Canvas(width, height);
-        gc = canvas.getGraphicsContext2D();
-        this.player = new Player(600.0,700.0, "file:./images/player.png", 30,60);
-        spawnAliens();
+        keysPressed = new HashSet<>();
+        Lasers = new ArrayList<>();
+
+
         canvas.setFocusTraversable(true);
+        gc = canvas.getGraphicsContext2D();
+
+        this.player = new Player(600.0,700.0, "file:./images/player.png", 30,60);
+
+        alienSwarm = new AlienSwarm();
         
         try{
             gameFont = Font.loadFont(("file:./fonts/Pixels.ttf"), 60);
@@ -65,19 +52,18 @@ public class GameDisplay {
             gameFont = Font.font("Arial",460);
         }
 
-        canvas.setOnKeyPressed(e -> handleKeyPress(e));
-        canvas.setOnKeyReleased(e -> handleKeyRelease(e));
+        canvas.setOnKeyPressed(this::handleKeyPress);
+        canvas.setOnKeyReleased(this::handleKeyRelease);
 
         drawScene();
-        
-        gameLoop = new AnimationTimer() {
+
+        AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                update(now); 
+                update(now);
             }
         };
         gameLoop.start();
-        
     }
 
     /**
@@ -93,7 +79,7 @@ public class GameDisplay {
         
         gc.drawImage(player.getImgView().getImage(), player.getX(), player.getY());
         
-         for (Alien alien : Aliens) {
+        for (Alien alien : alienSwarm.getAliens()) {
             gc.drawImage(alien.getImgView().getImage(), alien.getX(), alien.getY());
         }
         
@@ -107,114 +93,56 @@ public class GameDisplay {
     private void displayScoreAndLives(){
         gc.setFill(Color.WHITE);
         gc.setFont(gameFont);
-        gc.fillText("Score: ", 20, 30);
+        gc.fillText("Score: ", 40, 30);
         gc.setFill(Color.CYAN);
         gc.fillText(String.valueOf(player.getScore()), 130, 30);
         
         gc.setFill(Color.WHITE);
         gc.fillText("Lives: ", 740,30);
-        gc.drawImage(player.getImgView().getImage(), 830, 10);
         
-    }
-    
-    private void spawnAliens(){
-        int startX = 100;
-        int startY = 50;  
-        int alienWidth = 70;
-        int alienHeight = 60;
-        int spacing = 20;
-
-        for (int row = 0; row < 1; row++) {
-            for (int col = 0; col < 8; col++) {
-                int x = startX + col * (alienWidth + spacing);
-                int y = startY;
-                Alien alien = new LargeAlien(x, y, "file:./images/LargeAlien1.png", alienHeight, alienWidth);
-                alien.setRow(row);
-                alien.setColumn(col);
-                AliensPerCol.get(col).add(alien);
-                Aliens.add(alien);
-            }
-        }
-
-        for (int row = 1; row < 3; row++) {
-            for (int col = 0; col < 8; col++) {
-                int x = startX + col * (alienWidth + spacing);
-                int y = startY + row * (alienHeight + spacing);
-                Alien alien = new MediumAlien(x, y, "file:./images/MediumAlien1.png", alienHeight, alienWidth);
-                alien.setRow(row);
-                alien.setColumn(col);
-                AliensPerCol.get(col).add(alien);
-                Aliens.add(alien);
-            }
-        }
-
-        for (int row = 3; row < 5; row++) {
-            for (int col = 0; col < 8; col++) {
-                int x = startX + col * (alienWidth + spacing);
-                int y = startY + row * (alienHeight + spacing);
-                Alien alien = new SmallAlien(x, y, "file:./images/SmallAlien1.png", alienHeight, alienWidth);
-                alien.setRow(row);
-                alien.setColumn(col);
-                AliensPerCol.get(col).add(alien);
-                Aliens.add(alien);
-            }
-        }
-    }
-    
-    public void alien_pos_checker() {
-        for (Alien a : Aliens) {
-            if (a.getX() < 20 || a.getX() > 1100) {
-                move_down_next = true;  
-                break; 
-            }
-        }
-
-        if (move_down_next) {
-            for (Alien a : Aliens) {
-                a.setY(a.getY() + 20); 
-                a.setDirection(a.getDirection() * -1);
-            }
-            move_down_next = false;
-        }
-    }
-    
-    public void alien_move_down(){
-        if (move_down_next){
-          for (Alien a:Aliens){
-                a.setY(a.getY() + 2.0);
-            }
-            move_down_next = false;    
+        for (int i=0;i<player.getLives();i++){
+            gc.drawImage(player.getImgView().getImage(), 830 + 70*i, 10);    
         }
         
     }
     
     public void CollisionDetection(){
-        Iterator <Laser> lIterator = Lasers.iterator();        
-        while (lIterator.hasNext()){
+        Iterator<Laser> lIterator = Lasers.iterator();
+
+        while (lIterator.hasNext()) {
             Laser l = lIterator.next();
             Rectangle lRect = l.getLaser();
-            // if laser from player, go over alien collisions
-            if (l.getStatus()){
-                for (Alien a: Aliens){
-                    Rectangle AlienRect = a.getRect();
-                    if (lRect.intersects(AlienRect.getBoundsInLocal())){
-                        a.setDead(); 
-                        int score = player.getScore();
+
+            if (l.getStatus()) {  
+
+                for (Alien a : alienSwarm.getAliens()) {
+                    Rectangle alienRect = a.getRect();
+
+                    if (lRect.intersects(alienRect.getBoundsInLocal())) {
+                        a.setDead();
+
+                        
                         player.setScore(a.getPoints());
+
+                        
                         lIterator.remove();
+                        break;  
+                    }
+                }
+            } else {  
+                Rectangle playerRect = player.getRect();
+
+                if (lRect.intersects(playerRect.getBoundsInLocal())) {
+                    player.decrementLives();
+                    lIterator.remove();
+
+                    
+                    if (player.getLives() <= 0) {
+                        System.out.println("Game Over!");
+                        
                     }
                 }
             }
-            // laser is from alien, go over player collision
-            else{
-                Rectangle playerRect = player.getRect();
-                if (lRect.intersects(playerRect.getBoundsInLocal())){
-                    player.decrementLives();
-                    lIterator.remove();
-                    // add game over stuff if lives < 0
-                }
-            }
-            
         }
     }
 
@@ -231,15 +159,19 @@ public class GameDisplay {
         }
     }
     
-    private void aliensShoot(){
-        Alien a = Aliens.get(random.nextInt(Aliens.size()));
-        Laser laser = new Laser(a.getX() + (double) a.getWidth() /2, a.getY(), -9);
-        laser.setPlayer();
-        Lasers.add(laser);
-    }
-    
     private void handleKeyRelease(KeyEvent e){
         keysPressed.remove(e.getCode());
+    }
+
+    private void updateLasers() {
+        ArrayList <Laser> newLasers = new ArrayList<>();
+        for (Laser l: Lasers){
+            l.update();
+            if (!(l.get_outofscreen())){
+                newLasers.add(l);
+            }
+        }
+        Lasers = newLasers;
     }
     
     public void update(long now) {
@@ -252,38 +184,8 @@ public class GameDisplay {
         
         player.update();
         CollisionDetection();
-        ArrayList <Laser> newLasers = new ArrayList<>();
-        
-        for (Laser l: Lasers){
-            l.update();
-            if (!(l.get_outofscreen())){
-                newLasers.add(l);
-            }
-        }
-        
-        Lasers = newLasers;
-        
-        alien_pos_checker();
-        alien_move_down();
-        
-        ArrayList <Alien> newAliens = new ArrayList<>();
-        for (Alien a: Aliens){
-            a.update(AliensPerCol);
-            if (now - last_shot_time >= shoot_interval){
-                aliensShoot();
-                last_shot_time = now;
-            }
-            
-            if (!(a.getDead())){
-                newAliens.add(a);
-            }
-        }
-
-
-        Aliens = newAliens;
-        
+        updateLasers();
+        alienSwarm.update(Lasers, now);
         drawScene();
-        
     }
-    
 }

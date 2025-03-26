@@ -36,35 +36,12 @@ public class Alien extends Sprite {
         return this.points;
     }
 
-    private void move(List<List<Alien>> AliensPerCol) {
-        //int currentCol = this.getColumn();
-        //int rightColumnsLeft = AliensPerCol.size() - currentCol - 1;
-        //int leftColumnsLeft = currentCol - 1;
-        //boolean moveRight = true;
-        ListIterator<List<Alien>> it = AliensPerCol.listIterator(AliensPerCol.size());
+    public void move() {
         this.setX(this.getX() + (direction*this.speed));
-        //if (moveRight) {
-
-        //    if (this.getX() < (1090 - (this.getWidth()+20)*rightColumnsLeft)) {
-        //        this.setX(this.getX() + 1);
-        //    }
-
-        // else {
-        //    if (this.getX() > (1150 - this.getWidth()*leftColumnsLeft)) {
-        //        this.setX(this.getX() + 1);
-        //    }
-        //}
-
-        // Check if there are any non-empty columns ahead
-        
-        
-        
     }
 
-
-    public void update(List<List<Alien>> AliensPerCol) {
-        move(AliensPerCol);
-        
+    public void update() {
+        move();
     }
     
     public boolean getDead(){
