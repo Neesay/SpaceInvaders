@@ -1,4 +1,4 @@
-
+    
 /**
  * A Space Invaders simulator that renders the game on GameDisplay class.
  *
