@@ -3,6 +3,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Write a description of class Alien here.
@@ -17,6 +18,7 @@ public class Alien extends Sprite {
     public int column;
     public int row;
     protected double speed;
+    protected double direction;
 
     /**
      * Constructor for objects of class Alien
@@ -26,25 +28,43 @@ public class Alien extends Sprite {
         hp = 1;
         this.dead = false;
         this.speed = 0.25;
+        this.direction = 1;
     }
     
     public int getPoints()
     {
         return this.points;
     }
-    
-    private void move(List<List<Alien>> AliensPerCol){
-        if (AliensPerCol.get(this.getColumn()).isEmpty()) {
-            if (this.getX() < 800){
-                this.setX(this.getX() + (this.speed));
-            }
-        }
+
+    private void move(List<List<Alien>> AliensPerCol) {
+        //int currentCol = this.getColumn();
+        //int rightColumnsLeft = AliensPerCol.size() - currentCol - 1;
+        //int leftColumnsLeft = currentCol - 1;
+        //boolean moveRight = true;
+        ListIterator<List<Alien>> it = AliensPerCol.listIterator(AliensPerCol.size());
+        this.setX(this.getX() + (direction*this.speed));
+        //if (moveRight) {
+
+        //    if (this.getX() < (1090 - (this.getWidth()+20)*rightColumnsLeft)) {
+        //        this.setX(this.getX() + 1);
+        //    }
+
+        // else {
+        //    if (this.getX() > (1150 - this.getWidth()*leftColumnsLeft)) {
+        //        this.setX(this.getX() + 1);
+        //    }
+        //}
+
+        // Check if there are any non-empty columns ahead
         
-        this.setX(this.getX() + (this.speed));
+        
+        
     }
+
 
     public void update(List<List<Alien>> AliensPerCol) {
         move(AliensPerCol);
+        
     }
     
     public boolean getDead(){
@@ -69,5 +89,13 @@ public class Alien extends Sprite {
 
     public int getRow() {
         return row;
+    }
+    
+    public void setDirection(double n){
+        this.direction = n;
+    }
+    
+    public double getDirection(){
+        return this.direction;
     }
 }

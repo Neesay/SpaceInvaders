@@ -23,7 +23,7 @@ public class Player extends Sprite
     public Player(double x, double y, String path, int height, int width)
     {
         super(x,y,path,height,width);
-        this.speed = 5;
+        this.speed = 3;
         this.lives = 3;
         this.score = 0;
     }

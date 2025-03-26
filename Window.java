@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class Window extends Application {
 
-    private static final int WIDTH = 900;
+    private static final int WIDTH = 1200;
     private static final int HEIGHT = 800;
     private static final String GAME_TITLE = "Space Invaders";
     private static final String AUTHORS = "Aditya Ranjan, Kasim Morsel, Yaseen Alam, Yusuf Rahman"; 
@@ -66,6 +66,8 @@ public class Window extends Application {
         // Scene Setup
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setScene(scene);
+        stage.setResizable(false);
+
         stage.show();
         
         
