@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Alien
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Alien\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=x\ y\ path\ height\ width
+comment1.target=Alien(int,\ int,\ java.lang.String,\ int,\ int)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Alien\r\n
+comment2.params=
+comment2.target=int\ getPoints()
+comment3.params=
+comment3.target=void\ move()
+comment4.params=
+comment4.target=void\ update()
+comment5.params=
+comment5.target=boolean\ getDead()
+comment6.params=
+comment6.target=void\ setDead()
+numComments=7

@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=Laser
+comment1.params=x\ y\ speed
+comment1.target=Laser(int,\ int,\ int)
+comment2.params=
+comment2.target=void\ destroy()
+comment3.params=
+comment3.target=void\ update()
+comment4.params=
+comment4.target=javafx.scene.shape.Rectangle\ getLaser()
+comment5.params=
+comment5.target=boolean\ get_outofscreen()
+comment6.params=
+comment6.target=void\ setPlayer()
+comment7.params=
+comment7.target=boolean\ getStatus()
+numComments=8

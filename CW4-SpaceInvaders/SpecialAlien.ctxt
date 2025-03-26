@@ -1,0 +1,8 @@
+#BlueJ class context
+comment0.target=SpecialAlien
+comment1.params=x\ y\ path\ height\ width
+comment1.target=SpecialAlien(int,\ int,\ java.lang.String,\ int,\ int)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Alien\r\n\r\n\ @param\ x\r\n\ @param\ y\r\n\ @param\ path\r\n\ @param\ height\r\n\ @param\ width\r\n
+comment2.params=
+comment2.target=void\ shoot()
+numComments=3
