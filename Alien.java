@@ -1,9 +1,3 @@
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
-
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Write a description of class Alien here.

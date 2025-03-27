@@ -1,6 +1,4 @@
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
+
 /**
  * Write a description of class Player here.
  *
