@@ -10,6 +10,8 @@ import java.util.Iterator;
 
 /**
  * A Space Invaders simulator that renders the game on GameDisplay class.
+ * This class handles the game logic and updates the game state.
+ * 
  *
  * @author Yusuf Rahman
  * @version 1.1

@@ -128,6 +128,7 @@ public class GameDisplay {
 
     /**
      * Update the game state for a frame.
+     * Checks for movement and collisions
      *
      * @param now The current time
      */
