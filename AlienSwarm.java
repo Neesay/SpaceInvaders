@@ -2,39 +2,47 @@ import java.util.*;
 
 public class AlienSwarm {
     private List<Alien> Aliens;
-    private boolean move_down_next = false;
-    private long last_shot_time = 0;
+    private List<Alien> LargeAliens;
+    private boolean moveDownNext = false;
+    private long lastShotTime = 0;
     private final Random rand = new Random();
     private boolean spec = false;
     private SpecialAlien specAlien;
 
-
     public AlienSwarm() {
         Aliens = new ArrayList<>();
+        LargeAliens = new ArrayList<>();
         spawnAliens();
     }
 
     public void update(List<Laser> lasers, long now) {
-        alien_pos_checker();
-        alien_move_down();
+        alienPositionConstraint();
         spawnSpecialAlien();
-        shoot_update(lasers, now);
+        shootUpdate(lasers, now);
     }
 
-    public void shoot_update(List<Laser> lasers, long now) {
+    public void shootUpdate(List<Laser> lasers, long now) {
         long shoot_interval = 1000000000;
         ArrayList <Alien> newAliens = new ArrayList<>();
 
         for (Alien a: Aliens){
             a.move();
-            if (now - last_shot_time >= shoot_interval){
+            
+            if (now - lastShotTime >= shoot_interval){
                 aliensShoot(lasers);
-                last_shot_time = now;
+                lastShotTime = now;
             }
+            
             if (!(a.getDead())){
                 newAliens.add(a);
             }
+            else{
+                if (a instanceof SpecialAlien){
+                    spec = false;
+                }
+            }
         }
+        
         Aliens = newAliens;
     }
 
@@ -52,6 +60,7 @@ public class AlienSwarm {
                 Alien alien = new LargeAlien(x, y, "file:./images/LargeAlien1.png", alienHeight, alienWidth);
                 alien.setRow(row);
                 alien.setColumn(col);
+                LargeAliens.add(alien);
                 Aliens.add(alien);
             }
         }
@@ -80,8 +89,8 @@ public class AlienSwarm {
     }
     
     private void spawnSpecialAlien(){
-        if ((!(spec)) && rand.nextDouble() < 0.05){
-            SpecialAlien alien = new SpecialAlien(1200, 50, "file:./images/SuperAlien.png", 60, 80);
+        if ((!(spec)) && rand.nextDouble() < 0.0005){
+            SpecialAlien alien = new SpecialAlien(1300, 50, "file:./images/SuperAlien.png", 60, 80);
             Aliens.add(alien);
             spec = true;
         }
@@ -91,36 +100,32 @@ public class AlienSwarm {
         return Aliens;
     }
 
-    public void alien_pos_checker() {
+    public void alienPositionConstraint() {
         for (Alien a : Aliens) {
             if ((a.getX() < 20 || a.getX() > 1100) && !(a instanceof SpecialAlien)) {
-                move_down_next = true;
+                moveDownNext = true;
                 break;
             }
+            
         }
-
-        if (move_down_next) {
+        if (moveDownNext) {
             for (Alien a : Aliens) {
-                a.setY(a.getY() + 20);
-                a.setDirection(a.getDirection() * -1);
+                if (!(a instanceof SpecialAlien)){
+                    a.setY(a.getY() + 20);
+                    a.setDirection(a.getDirection() * -1);    
+                }
+                
             }
-            move_down_next = false;
-        }
-    }
-
-    public void alien_move_down(){
-        if (move_down_next){
-            for (Alien a:Aliens){
-                a.setY(a.getY() + 2.0);
-            }
-            move_down_next = false;
+            moveDownNext = false;
         }
     }
 
     private void aliensShoot(List<Laser> lasers){
-        Alien a = Aliens.get(rand.nextInt(Aliens.size()));
-        Laser laser = new Laser(a.getX() + (double) a.getWidth() /2, a.getY(), -9);
-        laser.setPlayer();
-        lasers.add(laser);
+        Alien a = LargeAliens.get(rand.nextInt(LargeAliens.size()));
+        if (!a.getDead()) {
+            Laser laser = new Laser(a.getX() + (double) a.getWidth() /2, a.getY() + 40, -9);
+            laser.setPlayer();
+            lasers.add(laser);
+        }
     }
 }

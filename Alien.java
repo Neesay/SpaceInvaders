@@ -33,10 +33,6 @@ public class Alien extends Sprite {
     public void move() {
         this.setX(this.getX() + (direction*this.speed));
     }
-
-    public void update() {
-        move();
-    }
     
     public boolean getDead(){
         return dead;
@@ -52,14 +48,6 @@ public class Alien extends Sprite {
 
     public void setRow(int row) {
         this.row = row;
-    }
-
-    public int getColumn() {
-        return column;
-    }
-
-    public int getRow() {
-        return row;
     }
     
     public void setDirection(double n){

@@ -2,11 +2,16 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 
+<<<<<<< Updated upstream
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+=======
+import java.util.*;
+import javafx.scene.paint.Color;
+>>>>>>> Stashed changes
 
 /**
  * A Space Invaders simulator that renders the game on GameDisplay class.
@@ -21,19 +26,39 @@ public class Game {
     private final Set <KeyCode> keysPressed;
     private final Player player;
     private final AlienSwarm alienSwarm;
+<<<<<<< Updated upstream
     private List <Laser> lasers;
     private List<Barrier> barriers;
     private static final int NUMBER_OF_BARRIERS = 3;
+=======
+    private final List <Laser> lasers;
+    private final List<Barrier> barriers;
+    private List<Rectangle> blocks;
+    private static final int NUMBER_OF_BARRIERS = 3;
+    private final Window window;
+    private ArrayList <String> shape;
+>>>>>>> Stashed changes
 
     /**
      * Constructor initialises the begining game state.
      */
+<<<<<<< Updated upstream
     public Game(int canvasWidth) {
         keysPressed = new HashSet<>();
         player = new Player(600.0,700.0, "file:./images/player.png", 30,60);
         alienSwarm = new AlienSwarm();
         lasers = new ArrayList<>();
         barriers = createBarriers(canvasWidth);
+=======
+    public Game(int canvasWidth, Window window) {
+        this.window = window;
+        keysPressed = new HashSet<>();
+        player = new Player(600.0,900.0, "file:./images/player.png", 30,60);
+        alienSwarm = new AlienSwarm();
+        lasers = new ArrayList<>();
+        barriers = createBarriers(canvasWidth);
+        this.shape = new ArrayList <> (Arrays.asList("  xxxxxxx"," xxxxxxxxx","xxxxxxxxxxx","xxxxxxxxxxx","xxxxxxxxxxx","xxx     xxx","xx       xx"));
+>>>>>>> Stashed changes
     }
 
     /**
@@ -64,8 +89,13 @@ public class Game {
      */
     private List<Barrier> createBarriers(int canvasWidth) {
         List<Barrier> barriers = new ArrayList<>();
+<<<<<<< Updated upstream
         double spacing = (canvasWidth - (NUMBER_OF_BARRIERS * 100)) / (NUMBER_OF_BARRIERS + 1);
         double y = 550;
+=======
+        double spacing = (double) (canvasWidth - (NUMBER_OF_BARRIERS * 100)) / (NUMBER_OF_BARRIERS + 1);
+        double y = 700;
+>>>>>>> Stashed changes
 
         for (int i = 0; i < NUMBER_OF_BARRIERS; i++) {
             double x = spacing + i * (spacing + 100);
@@ -74,7 +104,11 @@ public class Game {
         }
         return barriers;
     }
+<<<<<<< Updated upstream
 
+=======
+    
+>>>>>>> Stashed changes
     /**
      * Check for collisions between the player, aliens and lasers.
      */
@@ -125,9 +159,14 @@ public class Game {
                 if (lRect.intersects(playerRect.getBoundsInLocal())) {
                     player.decrementLives();
                     lIterator.remove();
+<<<<<<< Updated upstream
                     
                     if (player.getLives() <= 0) {
                         System.out.println("Game Over!");
+=======
+                    if (player.getLives() <= 0) {
+                        window.showGameOverScreen();
+>>>>>>> Stashed changes
                         
                     }
                 }
@@ -147,10 +186,16 @@ public class Game {
                 newLasers.add(l);
             }
         }
+<<<<<<< Updated upstream
         lasers = newLasers;
     }
 
     protected Set<KeyCode> getKeysPressed() { return (Set<KeyCode>) keysPressed; }
+=======
+    }
+
+    protected Set<KeyCode> getKeysPressed() { return keysPressed; }
+>>>>>>> Stashed changes
     
     protected Player getPlayer() { return player; }
 

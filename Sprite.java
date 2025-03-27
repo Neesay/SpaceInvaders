@@ -12,7 +12,6 @@ public class Sprite
 {
     
     protected ImageView image;
-    protected Rectangle SpriteRect;
     protected double x,y;
     protected int width, height;
     private Rectangle rect;
@@ -59,7 +58,7 @@ public class Sprite
     
     public void setY(double y){
         this.y = y;
-        this.rect.setX(y);
+        this.rect.setY(y);
         image.setY(y);
     }
     
