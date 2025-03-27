@@ -20,11 +20,7 @@ public class GameDisplay {
     private final int WIDTH;
     private final Window WINDOW;
     private final GraphicsContext gc;
-<<<<<<< Updated upstream
-    private final Game game;
-=======
     private Game game;
->>>>>>> Stashed changes
     private Font gameFont;
 
     /**
@@ -35,12 +31,8 @@ public class GameDisplay {
         canvas.setFocusTraversable(true);
         gc = canvas.getGraphicsContext2D();
 
-<<<<<<< Updated upstream
-        game = new Game(width);
-=======
         WINDOW = window;
         WIDTH = width;
->>>>>>> Stashed changes
 
         try{
             gameFont = Font.loadFont(("file:./fonts/Pixels.ttf"), 60);
@@ -75,15 +67,6 @@ public class GameDisplay {
         gc.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-<<<<<<< Updated upstream
-        
-        displayScoreAndLives();
-        
-        displayPlayer();
-        displayAliens();
-        displayLasers();
-        displayBarriers();
-=======
 
         if (isGameNotNull()) {
             displayScoreAndLives();
@@ -92,7 +75,6 @@ public class GameDisplay {
             displayLasers();
             displayBarriers();
         }
->>>>>>> Stashed changes
     }
 
     private void displayScoreAndLives() {
@@ -122,11 +104,7 @@ public class GameDisplay {
     } 
 
     private void displayPlayer() {
-<<<<<<< Updated upstream
-        Player player = game.getPlayer();
-=======
         Player player = game.getPlayer();   
->>>>>>> Stashed changes
         drawSprite(player);
     }
 
@@ -142,15 +120,9 @@ public class GameDisplay {
         for (Laser laser: lasers){
             gc.setFill(Color.RED);  
             gc.fillRect(laser.getLaser().getX(), 
-<<<<<<< Updated upstream
-                        laser.getLaser().getY(), 
-                        laser.getLaser().getWidth(), 
-                        laser.getLaser().getHeight());
-=======
             laser.getLaser().getY(), 
             laser.getLaser().getWidth(), 
             laser.getLaser().getHeight());
->>>>>>> Stashed changes
         }
     }
     
@@ -189,9 +161,6 @@ public class GameDisplay {
         drawScene();
     }    
 
-<<<<<<< Updated upstream
-    public Canvas getCanvas() { return canvas; }   
-=======
     public Canvas getCanvas() { return canvas; }
 
     public void startGame() {
@@ -209,5 +178,4 @@ public class GameDisplay {
     public boolean isGameNotNull() {
         return !(this.game == null);
     }
->>>>>>> Stashed changes
 }
