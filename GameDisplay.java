@@ -2,16 +2,11 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.input.*;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.animation.AnimationTimer;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Iterator;
-import java.util.Random;
 
 /**
  * The game display and graphics will be handled here and rendered to the window class.
@@ -77,7 +72,7 @@ public class GameDisplay {
 
     private void displayScoreAndLives() {
         Player player = game.getPlayer();
-        
+
         gc.setFill(Color.WHITE);
         gc.setFont(gameFont);
         gc.fillText("Score: ", 40, 30);
@@ -93,6 +88,10 @@ public class GameDisplay {
         
     }
 
+    /**
+     * Draw the sprite on the canvas.
+     * @param sprite can be Player, Alien, Barrier
+     */ 
     private void drawSprite(Sprite sprite) {
         gc.drawImage(sprite.getImgView().getImage(), sprite.getX(), sprite.getY());
     } 
@@ -154,8 +153,5 @@ public class GameDisplay {
         drawScene();
     }    
 
-    public Canvas getCanvas() { 
-        return canvas; 
-    }   
-
+    public Canvas getCanvas() { return canvas; }   
 }
