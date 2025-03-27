@@ -6,20 +6,30 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.animation.AnimationTimer;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A view of the game. This class is responsible for displaying the game state.
  * Manages the window and the canvas.
  *
- * @author Yusuf Rahman
+ * @author Aditya Ranjan, Yusuf Rahman
  * @version 1.0
  */
 public class Window extends Application {
 
-    private static final int WIDTH = 800;
-    private static final int HEIGHT = 600;
+    private static final int WIDTH = 1200;
+    private static final int HEIGHT = 800;
     private static final String GAME_TITLE = "Space Invaders";
-    private static final String AUTHORS = "Yusuf Rahman,"; // Add your name here
+    private static final String AUTHORS = "Aditya Ranjan, Kasim Morsel, Yaseen Alam, Yusuf Rahman"; 
+    private static final int PLAYER_SIZE = 60;
 
     /**
      * Create a window for the game.
@@ -56,8 +66,11 @@ public class Window extends Application {
         // Scene Setup
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setScene(scene);
-        stage.show();
+        stage.setResizable(false);
 
+        stage.show();
+        
+        
         // Start the game loop
         stage.show();
     }
@@ -69,7 +82,7 @@ public class Window extends Application {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("Game Title: " + GAME_TITLE);
-        alert.setContentText("Authors: " + AUTHORS + "\nVersion: 1.0");
+        alert.setContentText("Authors: " + AUTHORS + "\nVersion: 2.1");
         alert.showAndWait();
     }
 
