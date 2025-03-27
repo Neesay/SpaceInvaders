@@ -28,14 +28,18 @@ public class Game {
     /**
      * Constructor initialises the begining game state.
      */
-    public Game() {
+    public Game(int canvasWidth) {
         keysPressed = new HashSet<>();
         player = new Player(600.0,700.0, "file:./images/player.png", 30,60);
         alienSwarm = new AlienSwarm();
         lasers = new ArrayList<>();
-        initialiseBarriers();
+        barriers = createBarriers(canvasWidth);
     }
 
+    /**
+     * Allow player to move left and right and shoot lasers.
+     * Handle keyboard input
+     */
     protected void handleKeyPress(KeyEvent e) {
         Player player = getPlayer();
         List<Laser> lasers = getLasers();
@@ -48,21 +52,28 @@ public class Game {
         }
     }
     
+    /**
+     * Stop player movement when key is released.
+     */
     protected void handleKeyRelease(KeyEvent e) {
         keysPressed.remove(e.getCode());
     }
 
     /**
-     * Initialise the number of barriers at the beginning of the game.
+     * Create barriers evenly across the game landscape.
      */
-    public void initialiseBarriers() {
+    private List<Barrier> createBarriers(int canvasWidth) {
         List<Barrier> barriers = new ArrayList<>();
-        for (int i = 0; i < NUMBER_OF_BARRIERS; i++) {
-            barriers.add(new Barrier(Color.GREEN));
-        }
-        this.barriers = barriers;
-    }
+        double spacing = (canvasWidth - (NUMBER_OF_BARRIERS * 100)) / (NUMBER_OF_BARRIERS + 1);
+        double y = 550;
 
+        for (int i = 0; i < NUMBER_OF_BARRIERS; i++) {
+            double x = spacing + i * (spacing + 100);
+            Barrier barrier = new Barrier(x, y, "file:./images/barrier.png", 85, 125);
+            barriers.add(barrier);
+        }
+        return barriers;
+    }
 
     /**
      * Check for collisions between the player, aliens and lasers.
@@ -74,6 +85,25 @@ public class Game {
             Laser l = lIterator.next();
             Rectangle lRect = l.getLaser();
 
+            // Check for collisions with barriers
+            Iterator<Barrier> bIterator = barriers.iterator();
+            while (bIterator.hasNext()) {
+                Barrier barrier = bIterator.next();
+                Rectangle barrierRect = barrier.getRect();
+
+                if (lRect.intersects(barrierRect.getBoundsInLocal())) {
+                    barrier.decrementDurability();
+                    lIterator.remove();
+
+                    // Remove barrier if it has no durability left  
+                    if (barrier.getDurability() <= 0) {
+                        bIterator.remove();
+                    }
+                    break;
+                }
+            }
+
+            // If the laser is from the player, check for alien hits
             if (l.getStatus()) {  
 
                 for (Alien a : alienSwarm.getAliens()) {
@@ -81,22 +111,20 @@ public class Game {
 
                     if (lRect.intersects(alienRect.getBoundsInLocal())) {
                         a.setDead();
-
-                        
                         player.setScore(a.getPoints());
-
                         
                         lIterator.remove();
                         break;  
                     }
                 }
-            } else {  
+            } 
+            else {  
+                // Check if laser from alien hits player
                 Rectangle playerRect = player.getRect();
 
                 if (lRect.intersects(playerRect.getBoundsInLocal())) {
                     player.decrementLives();
                     lIterator.remove();
-
                     
                     if (player.getLives() <= 0) {
                         System.out.println("Game Over!");

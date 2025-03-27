@@ -34,7 +34,7 @@ public class GameDisplay {
         canvas.setFocusTraversable(true);
         gc = canvas.getGraphicsContext2D();
 
-        game = new Game();
+        game = new Game(width);
 
         try{
             gameFont = Font.loadFont(("file:./fonts/Pixels.ttf"), 60);
@@ -72,30 +72,12 @@ public class GameDisplay {
         displayPlayer();
         displayAliens();
         displayLasers();
+        displayBarriers();
     }
 
-    private void displayPlayer() {
-        Player player = game.getPlayer();
-        gc.drawImage(player.getImgView().getImage(), player.getX(), player.getY());
-    }
-
-    private void displayAliens() {
-        AlienSwarm alienSwarm = game.getAlienSwarm();
-        for (Alien alien : alienSwarm.getAliens()) {
-            gc.drawImage(alien.getImgView().getImage(), alien.getX(), alien.getY());
-        }
-    }
-
-    private void displayLasers() {
-        List<Laser> lasers = game.getLasers();
-        for (Laser laser: lasers){
-            gc.setFill(Color.RED);  
-            gc.fillRect(laser.getLaser().getX(), laser.getLaser().getY(), laser.getLaser().getWidth(), laser.getLaser().getHeight());
-        }
-    }
-    
     private void displayScoreAndLives() {
         Player player = game.getPlayer();
+        
         gc.setFill(Color.WHITE);
         gc.setFont(gameFont);
         gc.fillText("Score: ", 40, 30);
@@ -111,16 +93,57 @@ public class GameDisplay {
         
     }
 
+    private void drawSprite(Sprite sprite) {
+        gc.drawImage(sprite.getImgView().getImage(), sprite.getX(), sprite.getY());
+    } 
+
+    private void displayPlayer() {
+        Player player = game.getPlayer();
+        drawSprite(player);
+    }
+
+    private void displayAliens() {
+        AlienSwarm alienSwarm = game.getAlienSwarm();
+        for (Alien alien : alienSwarm.getAliens()) {
+            drawSprite(alien);
+        }
+    }
+
+    private void displayLasers() {
+        List<Laser> lasers = game.getLasers();
+        for (Laser laser: lasers){
+            gc.setFill(Color.RED);  
+            gc.fillRect(laser.getLaser().getX(), 
+                        laser.getLaser().getY(), 
+                        laser.getLaser().getWidth(), 
+                        laser.getLaser().getHeight());
+        }
+    }
+    
+    private void displayBarriers() {
+        List<Barrier> barriers = game.getBarriers();
+        for (Barrier barrier : barriers) {
+            drawSprite(barrier);
+        }
+    }
+
+    /**
+     * Update the game state for a frame.
+     *
+     * @param now The current time
+     */
     public void update(long now) {
         Player player = game.getPlayer();
         AlienSwarm alienSwarm = game.getAlienSwarm();
         List<Laser> lasers = game.getLasers();
         Set<KeyCode> keysPressed = game.getKeysPressed();
 
+        boolean withinBoundary = player.getX() + player.getWidth() < canvas.getWidth();
+
         if (keysPressed.contains(KeyCode.LEFT) && player.getX() > 40){
             player.setX(player.getX() - player.getSpeed());
         }
-        else if (keysPressed.contains(KeyCode.RIGHT) && player.getX() + player.getWidth() < canvas.getWidth() && player.getX() < 1100){
+        else if (keysPressed.contains(KeyCode.RIGHT) && withinBoundary && player.getX() < 1100){
             player.setX(player.getX() + player.getSpeed());            
         }
         

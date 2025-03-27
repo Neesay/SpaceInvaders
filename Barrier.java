@@ -1,43 +1,27 @@
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
- * A trapezium-shaped barrier that absorbs laser shots.
+ * A barrier that absorbs laser shots.
  *
  * @author Yusuf Rahman
- * @version 1.0
+ * @version 1.1
  */
-public class Barrier {
-  private Color color;
-  private final double WIDTH_TOP = 70;
-  private final double WIDTH_BOTTOM = 110;
-  private final double HEIGHT = 60;
-  private double x, y;
-  private int durability = 3;
+public class Barrier extends Sprite {
+
+  private int durability = 5;
   
   /**
-   * Create a barrier with the given color.
+   * Create a barrier with a specified position, image, and size.
    */
-  public Barrier(Color color) {
-    this.color = color;
-  }
-  
-  /**
-   * Place the barrier at the given position with the given dimensions.
-   */
-  public void place(double x, double y) {
-    this.x = x;
-    this.y = y;
+  public Barrier(double x, double y, String path, int height, int width) {
+    super(x, y, path, height,width);
   }
 
-  /**
-   * Render the barrier on the given canvas.
-   */
-  public void render(GraphicsContext gc) {
-      double[] xPoints = {x, x + WIDTH_TOP, x + WIDTH_BOTTOM, x - (WIDTH_BOTTOM - WIDTH_TOP)};
-      double[] yPoints = {y, y, y + HEIGHT, y + HEIGHT};
-      
-      gc.setFill(color);
-      gc.fillPolygon(xPoints, yPoints, 4);
-  }
+  protected int getDurability() { return durability; }
+
+  protected void decrementDurability() { durability--; }
 }
