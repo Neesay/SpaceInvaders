@@ -23,30 +23,19 @@ public class GameDisplay {
 
     private final Canvas canvas;
     private final GraphicsContext gc;
-    private Game game;
-    private final Set <KeyCode> keysPressed;
+    private final Game game;
     private Font gameFont;
-    private final Player player;
-    private final AlienSwarm alienSwarm;
-    private List <Laser> Lasers;
 
     /**
      * Constructor for objects of class GameDisplay
      */
     public GameDisplay(int width, int height) {
         canvas = new Canvas(width, height);
-        keysPressed = new HashSet<>();
-        Lasers = new ArrayList<>();
-
-
         canvas.setFocusTraversable(true);
         gc = canvas.getGraphicsContext2D();
+
         game = new Game();
 
-        this.player = new Player(600.0,700.0, "file:./images/player.png", 30,60);
-
-        alienSwarm = new AlienSwarm();
-        
         try{
             gameFont = Font.loadFont(("file:./fonts/Pixels.ttf"), 60);
         }
@@ -54,8 +43,8 @@ public class GameDisplay {
             gameFont = Font.font("Arial",460);
         }
 
-        canvas.setOnKeyPressed(this::handleKeyPress);
-        canvas.setOnKeyReleased(this::handleKeyRelease);
+        canvas.setOnKeyPressed(e -> game.handleKeyPress(e));
+        canvas.setOnKeyReleased(e -> game.handleKeyRelease(e));
 
         drawScene();
 
@@ -73,26 +62,40 @@ public class GameDisplay {
      *
      */
     private void drawScene() {
+        // Background
         gc.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         
         displayScoreAndLives();
         
+        displayPlayer();
+        displayAliens();
+        displayLasers();
+    }
+
+    private void displayPlayer() {
+        Player player = game.getPlayer();
         gc.drawImage(player.getImgView().getImage(), player.getX(), player.getY());
-        
+    }
+
+    private void displayAliens() {
+        AlienSwarm alienSwarm = game.getAlienSwarm();
         for (Alien alien : alienSwarm.getAliens()) {
             gc.drawImage(alien.getImgView().getImage(), alien.getX(), alien.getY());
         }
-        
-        for (Laser laser: Lasers){
+    }
+
+    private void displayLasers() {
+        List<Laser> lasers = game.getLasers();
+        for (Laser laser: lasers){
             gc.setFill(Color.RED);  
             gc.fillRect(laser.getLaser().getX(), laser.getLaser().getY(), laser.getLaser().getWidth(), laser.getLaser().getHeight());
         }
-        
     }
     
-    private void displayScoreAndLives(){
+    private void displayScoreAndLives() {
+        Player player = game.getPlayer();
         gc.setFill(Color.WHITE);
         gc.setFont(gameFont);
         gc.fillText("Score: ", 40, 30);
@@ -107,76 +110,13 @@ public class GameDisplay {
         }
         
     }
-    
-    public void CollisionDetection(){
-        Iterator<Laser> lIterator = Lasers.iterator();
 
-        while (lIterator.hasNext()) {
-            Laser l = lIterator.next();
-            Rectangle lRect = l.getLaser();
-
-            if (l.getStatus()) {  
-
-                for (Alien a : alienSwarm.getAliens()) {
-                    Rectangle alienRect = a.getRect();
-
-                    if (lRect.intersects(alienRect.getBoundsInLocal())) {
-                        a.setDead();
-
-                        
-                        player.setScore(a.getPoints());
-
-                        
-                        lIterator.remove();
-                        break;  
-                    }
-                }
-            } else {  
-                Rectangle playerRect = player.getRect();
-
-                if (lRect.intersects(playerRect.getBoundsInLocal())) {
-                    player.decrementLives();
-                    lIterator.remove();
-
-                    
-                    if (player.getLives() <= 0) {
-                        System.out.println("Game Over!");
-                        
-                    }
-                }
-            }
-        }
-    }
-
-    public Canvas getCanvas() { 
-        return canvas; 
-    }
-    
-    private void handleKeyPress(KeyEvent e){
-        keysPressed.add(e.getCode());
-        if (e.getCode() == KeyCode.SPACE && player.getReady()){
-            player.setReady(false);
-            Laser laser = new Laser(player.getX() + ((double) player.getWidth() /2), player.getY(), 9);
-            Lasers.add(laser);
-        }
-    }
-    
-    private void handleKeyRelease(KeyEvent e){
-        keysPressed.remove(e.getCode());
-    }
-
-    private void updateLasers() {
-        ArrayList <Laser> newLasers = new ArrayList<>();
-        for (Laser l: Lasers){
-            l.update();
-            if (!(l.get_outofscreen())){
-                newLasers.add(l);
-            }
-        }
-        Lasers = newLasers;
-    }
-    
     public void update(long now) {
+        Player player = game.getPlayer();
+        AlienSwarm alienSwarm = game.getAlienSwarm();
+        List<Laser> lasers = game.getLasers();
+        Set<KeyCode> keysPressed = game.getKeysPressed();
+
         if (keysPressed.contains(KeyCode.LEFT) && player.getX() > 40){
             player.setX(player.getX() - player.getSpeed());
         }
@@ -185,9 +125,14 @@ public class GameDisplay {
         }
         
         player.update();
-        CollisionDetection();
-        updateLasers();
-        alienSwarm.update(Lasers, now);
+        game.CollisionDetection();
+        game.updateLasers();
+        alienSwarm.update(lasers, now);
         drawScene();
-    }
+    }    
+
+    public Canvas getCanvas() { 
+        return canvas; 
+    }   
+
 }
