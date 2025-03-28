@@ -10,9 +10,10 @@ import java.util.Set;
 
 /**
  * The game display and graphics will be handled here and rendered to the window class.
+ * All the game objects will be drawn on the canvas.
  *
- * @author 
- * @version (a version number or a date)
+ * @author Aditya Ranjan, Yusuf Rahman
+ * @version 1.0
  */
 public class GameDisplay {
 
@@ -24,15 +25,20 @@ public class GameDisplay {
     private Font gameFont;
 
     /**
-     * Constructor for objects of class GameDisplay
+     * Constructor that creates a canvas and initializes the game.
+     * Sets up the key event handlers for movement and laser shooting.
+     * Creates an animation timer to update the game state and redraw the scene.
+     * 
+     * @param width The width of the canvas
+     * @param height The height of the canvas
      */
     public GameDisplay(int width, int height, Window window) {
         canvas = new Canvas(width, height);
         canvas.setFocusTraversable(true);
         gc = canvas.getGraphicsContext2D();
 
-        WINDOW = window;
-        WIDTH = width;
+        this.WINDOW = window;
+        this.WIDTH = width;
 
         try{
             gameFont = Font.loadFont(("file:./fonts/Pixels.ttf"), 60);
@@ -44,8 +50,8 @@ public class GameDisplay {
         canvas.setOnKeyPressed(e -> game.handleKeyPress(e));
         canvas.setOnKeyReleased(e -> game.handleKeyRelease(e));
 
+        // Draw the sprites and start the game loop to update the game state.
         drawScene();
-
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -59,7 +65,8 @@ public class GameDisplay {
     }
 
     /**
-     * Draw the scene.
+     * Set the background and draw the score and lives.
+     * Draw the game objects/sprites on the canvas.
      *
      */
     private void drawScene() {
@@ -77,6 +84,9 @@ public class GameDisplay {
         }
     }
 
+    /**
+     * Draws the score and lives on the canvas.
+     */
     private void displayScoreAndLives() {
         Player player = game.getPlayer();
 
@@ -96,7 +106,8 @@ public class GameDisplay {
     }
 
     /**
-     * Draw the sprite on the canvas.
+     * Draw the given sprite on the canvas.
+     * 
      * @param sprite can be Player, Alien, Barrier
      */ 
     private void drawSprite(Sprite sprite) {
@@ -139,12 +150,13 @@ public class GameDisplay {
      *
      * @param now The current time
      */
-    public void update(long now) {
+    private void update(long now) {
         Player player = game.getPlayer();
         AlienSwarm alienSwarm = game.getAlienSwarm();
         List<Laser> lasers = game.getLasers();
         Set<KeyCode> keysPressed = game.getKeysPressed();
 
+        // Handle player movement
         boolean withinBoundary = player.getX() + player.getWidth() < canvas.getWidth();
 
         if (keysPressed.contains(KeyCode.LEFT) && player.getX() > 40){
@@ -155,7 +167,7 @@ public class GameDisplay {
         }
         
         player.update();
-        game.CollisionDetection();
+        game.collisionDetection();
         game.updateLasers();
         alienSwarm.update(lasers, now);
         drawScene();
@@ -171,11 +183,7 @@ public class GameDisplay {
         game = null;
     }
 
-    public void restartGame() {
-        game = new Game(WIDTH, WINDOW);
-    }
-
     public boolean isGameNotNull() {
-        return !(this.game == null);
+        return (this.game != null);
     }
 }

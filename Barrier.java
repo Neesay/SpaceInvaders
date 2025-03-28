@@ -10,6 +10,7 @@ public class Barrier extends Sprite {
 
   private int durability = 5;
   ArrayList <String> shape;
+  
   /**
    * Create a barrier with a specified position, image, and size.
    */
@@ -18,14 +19,10 @@ public class Barrier extends Sprite {
     this.shape = new ArrayList <> (Arrays.asList("  xxxxxxx"," xxxxxxxxx","xxxxxxxxxxx","xxxxxxxxxxx","xxxxxxxxxxx","xxx     xxx","xx       xx"));
   }
 
-  protected int getDurability() { return durability; }
+  public int getDurability() { return durability; }
 
-  protected void decrementDurability() { 
-      durability--; 
-    }
+  public void decrementDurability() { durability--; }
         
-  protected ArrayList <String> getShape(){
-      return this.shape;
-  }
+  protected ArrayList <String> getShape() { return this.shape; }
   
 }

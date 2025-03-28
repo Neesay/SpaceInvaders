@@ -1,31 +1,49 @@
 import java.util.*;
 
+/**
+ * A group of aliens that can move and shoot lasers.
+ *
+ * @author (your name)
+ * @version 1.0
+ */
 public class AlienSwarm {
-    private List<Alien> Aliens;
-    private List<Alien> LargeAliens;
+
+    private List<Alien> aliens;
+    private List<Alien> largeAliens;
     private boolean moveDownNext = false;
     private long lastShotTime = 0;
     private final Random rand = new Random();
     private boolean spec = false;
-    private SpecialAlien specAlien;
 
+    /**
+     * Constructor for AlienSwarm which spawns a list of aliens.
+     */
     public AlienSwarm() {
-        Aliens = new ArrayList<>();
-        LargeAliens = new ArrayList<>();
+        aliens = new ArrayList<>();
+        largeAliens = new ArrayList<>();
         spawnAliens();
     }
 
+    /**
+     * Update the position of the aliens and check for collisions with lasers.
+     * 
+     * @param lasers List of lasers to check for collisions
+     * @param now Current time
+     */
     public void update(List<Laser> lasers, long now) {
         alienPositionConstraint();
         spawnSpecialAlien();
         shootUpdate(lasers, now);
     }
 
-    public void shootUpdate(List<Laser> lasers, long now) {
+    /**
+     * Triggers the aliens to shoot lasers.
+     */
+    private void shootUpdate(List<Laser> lasers, long now) {
         long shoot_interval = 1000000000;
         ArrayList <Alien> newAliens = new ArrayList<>();
 
-        for (Alien a: Aliens){
+        for (Alien a: aliens){
             a.move();
             
             if (now - lastShotTime >= shoot_interval){
@@ -42,11 +60,10 @@ public class AlienSwarm {
                 }
             }
         }
-        
-        Aliens = newAliens;
+        aliens = newAliens;
     }
 
-    public void spawnAliens(){
+    private void spawnAliens() {
         int startX = 100;
         int startY = 150;
         int alienWidth = 70;
@@ -60,8 +77,8 @@ public class AlienSwarm {
                 Alien alien = new LargeAlien(x, y, "file:./images/LargeAlien1.png", alienHeight, alienWidth);
                 alien.setRow(row);
                 alien.setColumn(col);
-                LargeAliens.add(alien);
-                Aliens.add(alien);
+                largeAliens.add(alien);
+                aliens.add(alien);
             }
         }
 
@@ -72,7 +89,7 @@ public class AlienSwarm {
                 Alien alien = new MediumAlien(x, y, "file:./images/MediumAlien1.png", alienHeight, alienWidth);
                 alien.setRow(row);
                 alien.setColumn(col);
-                Aliens.add(alien);
+                aliens.add(alien);
             }
         }
 
@@ -83,25 +100,23 @@ public class AlienSwarm {
                 Alien alien = new SmallAlien(x, y, "file:./images/SmallAlien1.png", alienHeight, alienWidth);
                 alien.setRow(row);
                 alien.setColumn(col);
-                Aliens.add(alien);
+                aliens.add(alien);
             }
         }
     }
     
-    private void spawnSpecialAlien(){
+    private void spawnSpecialAlien() {
         if ((!(spec)) && rand.nextDouble() < 0.0005){
             SpecialAlien alien = new SpecialAlien(1300, 50, "file:./images/SuperAlien.png", 60, 80);
-            Aliens.add(alien);
+            aliens.add(alien);
             spec = true;
         }
     }
 
-    public List<Alien> getAliens() {
-        return Aliens;
-    }
+    public List<Alien> getAliens() { return aliens; }
 
-    public void alienPositionConstraint() {
-        for (Alien a : Aliens) {
+    private void alienPositionConstraint() {
+        for (Alien a : aliens) {
             if ((a.getX() < 20 || a.getX() > 1100) && !(a instanceof SpecialAlien)) {
                 moveDownNext = true;
                 break;
@@ -109,8 +124,8 @@ public class AlienSwarm {
             
         }
         if (moveDownNext) {
-            for (Alien a : Aliens) {
-                if (!(a instanceof SpecialAlien)){
+            for (Alien a : aliens) {
+                if (!(a instanceof SpecialAlien)) {
                     a.setY(a.getY() + 20);
                     a.setDirection(a.getDirection() * -1);    
                 }
@@ -120,8 +135,8 @@ public class AlienSwarm {
         }
     }
 
-    private void aliensShoot(List<Laser> lasers){
-        Alien a = LargeAliens.get(rand.nextInt(LargeAliens.size()));
+    private void aliensShoot(List<Laser> lasers) {
+        Alien a = largeAliens.get(rand.nextInt(largeAliens.size()));
         if (!a.getDead()) {
             Laser laser = new Laser(a.getX() + (double) a.getWidth() /2, a.getY() + 40, -9);
             laser.setPlayer();
