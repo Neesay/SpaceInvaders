@@ -3,17 +3,18 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 
 /**
- * Write a description of class Alien here.
+ *  An alien is a sprite that moves across the screen.
+ *  It can shoot lasers and will be destroyed if hit by a laser.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Yaseen Alam, Aditya Ranjan
+ * @version 1.4
  */
 public abstract class Alien extends Sprite {
     protected int points;
     protected int hp;
     protected boolean dead;
-    public int column;
-    public int row;
+    private int column;
+    private int row;
     protected double speed;
     protected double direction;
     protected boolean showingFrame1;

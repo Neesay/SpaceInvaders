@@ -18,11 +18,10 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class Window extends Application {
-
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 950;
     private static final String GAME_TITLE = "Space Invaders";
-    private static final String AUTHORS = "Aditya Ranjan, Kasim Morsel, Yaseen Alam, Yusuf Rahman"; 
+    private static final String AUTHORS = "Aditya Ranjan, Kasim Morsel, Yaseen Alam, Yusuf Rahman";
     private VBox menuBox;
     private VBox gameOverBox;
 
@@ -54,8 +53,8 @@ public class Window extends Application {
         gamePane.setCenter(gameDisplay.getCanvas());
 
         // Menu content
-        ImageView titleImage = new ImageView(new Image("file:images/titleSi.png"));
-        titleImage.setFitHeight(200);
+        ImageView titleImage = new ImageView(new Image("file:images/title.png"));
+        titleImage.setFitHeight(325);
         titleImage.setPreserveRatio(true);
 
         HBox row1 = createScoreRow("file:images/SmallALien1.png", "= 10 PTS", Color.WHITE, pixelFont);
@@ -115,9 +114,6 @@ public class Window extends Application {
         Scene scene = new Scene(root, WIDTH, HEIGHT + 20);
         stage.setScene(scene);
         stage.show();
-
-        // For testing purposes, you can show the game over screen with:
-        // gameOverBox.setVisible(true);
     }
 
     private HBox createScoreRow(String imagePath, String text, Color textColor, Font font) {
@@ -137,9 +133,9 @@ public class Window extends Application {
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(Font.font("Pixels", 30));
-        button.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Pixels'; -fx-font-size: 30px; -fx-cursor: hand;");
-        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: transparent; -fx-text-fill: cyan; -fx-font-family: 'Pixels'; -fx-font-size: 30px; -fx-cursor: hand;"));
-        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Pixels'; -fx-font-size: 30px; -fx-cursor: hand;"));
+        button.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Pixels'; -fx-font-size: 55px; -fx-cursor: hand;");
+        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color: transparent; -fx-text-fill: cyan; -fx-font-family: 'Pixels'; -fx-font-size: 55px; -fx-cursor: hand;"));
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Pixels'; -fx-font-size: 55px; -fx-cursor: hand;"));
         return button;
     }
 

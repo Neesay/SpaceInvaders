@@ -16,7 +16,7 @@ public class Barrier extends Sprite {
     super(x, y, pathFrames, height,width);
   }
 
-  protected int getDurability() { return durability; }
+  public int getDurability() { return durability; }
 
-  protected void decrementDurability() { durability--; }
+  public void decrementDurability() { durability--; }
 }

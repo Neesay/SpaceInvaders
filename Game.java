@@ -30,24 +30,27 @@ public class Game {
     private boolean GAME_OVER;
 
     /**
-     * Constructor initialises the begining game state.
+     * A Space Invaders simulator that renders the game on GameDisplay class.
      */
     public Game(int canvasWidth, Window window) {
         this.window = window;
-        keysPressed = new HashSet<>();
+        this.keysPressed = new HashSet<>();
+
         String[] playerFrames = {"file:./images/player.png", "file:./images/player_hit.png"};
-        player = new Player(580.0,900.0, playerFrames, 30,60);
-        alienSwarm = new AlienSwarm();
-        lasers = new ArrayList<>();
-        barriers = createBarriers(canvasWidth);
-        GAME_OVER = false;
+        this.player = new Player(580.0,900.0, playerFrames, 30,60);
+        this.alienSwarm = new AlienSwarm();
+        this.lasers = new ArrayList<>();
+        String[] barrierFrames = {"file:./images/barrier.png"};
+        this.barriers = createBarriers(canvasWidth, 700, barrierFrames, 85, 12);
+
+        this.GAME_OVER = false;
     }
 
     /**
      * Allow player to move left and right and shoot lasers.
      * Handle keyboard input
      */
-    protected void handleKeyPress(KeyEvent e) {
+    public void handleKeyPress(KeyEvent e) {
         Player player = getPlayer();
         List<Laser> lasers = getLasers();
 
@@ -62,22 +65,21 @@ public class Game {
     /**
      * Stop player movement when key is released.
      */
-    protected void handleKeyRelease(KeyEvent e) {
+    public void handleKeyRelease(KeyEvent e) {
         keysPressed.remove(e.getCode());
     }
 
     /**
      * Create barriers evenly across the game landscape.
      */
-    private List<Barrier> createBarriers(int canvasWidth) {
+    private List<Barrier> createBarriers(int canvasWidth, int y, String[] pathFrames, int height, int width) {
         List<Barrier> barriers = new ArrayList<>();
-        double spacing = (double) (canvasWidth - (NUMBER_OF_BARRIERS * 100)) / (NUMBER_OF_BARRIERS + 1);
-        double y = 700;
+        double spacing = (double) (canvasWidth - (NUMBER_OF_BARRIERS * width)) / (NUMBER_OF_BARRIERS + 1);
+
 
         for (int i = 0; i < NUMBER_OF_BARRIERS; i++) {
-            double x = spacing + i * (spacing + 100);
-            String[] barrierFrames = {"file:./images/barrier1.png", null};
-            Barrier barrier = new Barrier(x, y, barrierFrames, 85, 125);
+            double x = spacing + i * (spacing + width);
+            Barrier barrier = new Barrier(x, y, pathFrames, height, width);
             barriers.add(barrier);
         }
         return barriers;
@@ -86,7 +88,7 @@ public class Game {
     /**
      * Check for collisions between the player, aliens and lasers.
      */
-    public void CollisionDetection() {
+    public void collisionDetection() {
         Iterator<Laser> lIterator = lasers.iterator();
 
         while (lIterator.hasNext()) {
@@ -158,7 +160,7 @@ public class Game {
     /**
      * Update the lasers in the game.
      */
-    protected void updateLasers() {
+    public void updateLasers() {
         List<Laser> lasers = getLasers();
         ArrayList <Laser> newLasers = new ArrayList<>();
         for (Laser l: lasers){
@@ -169,15 +171,15 @@ public class Game {
         }
     }
 
-    protected Set<KeyCode> getKeysPressed() { return keysPressed; }
+    public Set<KeyCode> getKeysPressed() { return keysPressed; }
     
-    protected Player getPlayer() { return player; }
+    public Player getPlayer() { return player; }
 
-    protected AlienSwarm getAlienSwarm() { return alienSwarm; }
+    public AlienSwarm getAlienSwarm() { return alienSwarm; }
 
-    protected List<Laser> getLasers() { return lasers; }
+    public List<Laser> getLasers() { return lasers; }
 
-    protected List<Barrier> getBarriers() { return barriers; }
+    public List<Barrier> getBarriers() { return barriers; }
 
     public void setGameOver() {
         GAME_OVER = true;
