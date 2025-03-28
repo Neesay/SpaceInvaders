@@ -27,10 +27,23 @@ public class Barrier extends Sprite {
     image.setY(y);
   }
 
+  /**
+  * Returns durability of the barrier.
+  * @return durability.
+  */
+ 
   public int getDurability() { return durability; }
 
+  /**
+  * Reduces durability of barriers.
+  */
+ 
   public void decrementDurability() { durability--; }
 
+  /**
+  * Switches frame of barriers.
+  */
+ 
   public void switchFrames() {
     String nextFrame = getPathFrames()[durability + 1];
     if (nextFrame != null && !nextFrame.isEmpty()) {

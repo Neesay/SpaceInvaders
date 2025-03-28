@@ -16,7 +16,7 @@ import java.util.Iterator;
  *
  *
  * @author Yusuf Rahman, Yaseen Alam, Aditya Ranjan, Kasim Morsel
- * @version 1.1
+ * @version 2.1
  */
 public class Game {
 
@@ -175,17 +175,29 @@ public class Game {
             }
         }
         
+        // Alien collision with player and with barriers.
+        
         for (Alien a:alienSwarm.getAliens()){
             Rectangle alienRect = a.getRect();
             if (alienRect.intersects(player.getRect().getBoundsInLocal())){
+                setGameOver();
                 player.switchToDieFrame();
                 window.showGameOverScreen();
             }
-        }
+            
+            Iterator<Barrier> bIterator = barriers.iterator();
+            while (bIterator.hasNext()){
+                Rectangle barrierRect = bIterator.next().getRect();
+                if (alienRect.intersects(barrierRect.getBoundsInLocal())){
+                    bIterator.remove();
+                }
+            }
+            
+        }    
     }
 
     /**
-     * Update the lasers in the game.
+      * Update the lasers in the game.
      */
     public void updateLasers() {
         List<Laser> lasers = getLasers();
@@ -216,28 +228,65 @@ public class Game {
         this.player.resetLives();
     }
 
+    /**
+     * Returns set of keys pressed.
+     */
+    
     public Set<KeyCode> getKeysPressed() { return keysPressed; }
 
+    /**
+     * Returns player
+     */
+    
     public Player getPlayer() { return player; }
 
+    /**
+     * Returns alien swarm.
+     */
+    
     public AlienSwarm getAlienSwarm() { return alienSwarm; }
 
+    /**
+     * Returns lasers.
+     */
+    
     public List<Laser> getLasers() { return lasers; }
 
+    /**
+     * Returns barriers.
+     */
+    
+    
     public List<Barrier> getBarriers() { return barriers; }
 
+    /**
+     * Returns whether game is over or not.
+     */
+    
     public void setGameOver() {
         GAME_OVER = true;
     }
 
+    /**
+     * Update the lasers in the game.
+     */
+    
     public boolean isItGameOver() {
         return !GAME_OVER;
     }
 
+    /**
+     * Returns if game is null or not..
+     */
+    
     public boolean isGameNotNull() {
         return this.player != null || this.alienSwarm != null || this.lasers != null;
     }
 
+    /**
+     * Returns if round is over or not.
+     */
+    
     public boolean isRoundOver() {
         return alienSwarm.getAliens().isEmpty();
     }

@@ -190,7 +190,7 @@ public class Window extends Application {
     }
 
     /**
-     * Displays the game over screen.
+     * Displays the game over screen and sets the high score.
      */
     
     public void showGameOverScreen() {

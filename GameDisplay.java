@@ -157,9 +157,9 @@ public class GameDisplay {
         for (Laser laser: lasers){
             gc.setFill(Color.RED);
             gc.fillRect(laser.getLaser().getX(),
-                    laser.getLaser().getY(),
-                    laser.getLaser().getWidth(),
-                    laser.getLaser().getHeight());
+            laser.getLaser().getY(),
+            laser.getLaser().getWidth(),
+            laser.getLaser().getHeight());
         }
     }
 
@@ -227,9 +227,19 @@ public class GameDisplay {
         game.setGameOver();
     }
     
+    /**
+     * Gets current score
+     * @param game.getPlayer().getScore().
+     */
+    
     public int getCurrentScore() {
         return game.getPlayer().getScore();
     }
+    
+    /**
+     * Sets best score.
+     * @param score.
+     */
     
     public void setBestScore(int score) {
         this.bestScore = score;
