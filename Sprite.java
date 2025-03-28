@@ -10,10 +10,9 @@ import javafx.scene.shape.Rectangle;
  */
 public class Sprite {
     
-    private ImageView image;
-    private Rectangle SpriteRect;
-    private double x,y;
-    private int width, height;
+    protected ImageView image;
+    protected double x,y;
+    protected int width, height;
     private Rectangle rect;
     
     /**
@@ -54,7 +53,7 @@ public class Sprite {
      */
     public void setY(double y) {
         this.y = y;
-        this.rect.setX(y);
+        this.rect.setY(y);
         image.setY(y);
     }
 

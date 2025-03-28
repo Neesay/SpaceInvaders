@@ -1,6 +1,7 @@
 
 /**
- * Write a description of class Alien here.
+ * An alien is a sprite that moves across the screen.
+ * It can shoot lasers and will be destroyed if hit by a laser.
  *
  * @author (your name)
  * @version (a version number or a date)
@@ -27,9 +28,9 @@ public class Alien extends Sprite {
     
     public int getPoints() { return this.points; }
 
-    public void move() { this.setX(this.getX() + (direction*this.speed)); }
-
-    public void update() { move(); }
+    public void move() {
+        this.setX(this.getX() + (direction*this.speed));
+    }
     
     public boolean getDead() { return dead; }
     

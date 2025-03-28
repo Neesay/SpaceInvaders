@@ -1,3 +1,4 @@
+import java.util.Random;
 public class SpecialAlien extends Alien{
     /**
      * Creates a special alien with a specified position, image, and size.
@@ -6,9 +7,16 @@ public class SpecialAlien extends Alien{
         super(x, y, path, height, width);
     }
 
+    /**
+     * Moves the special alien across the screen and sets a random points value.
+     */
     @Override
     public void move() {
-        double currentX = super.getX();
-        super.setX(currentX - 1.2);
+        this.setX(this.getX() - 1.2);
+        Random rand = new Random();
+        points = rand.nextInt(160) + 40;
+        if (x<-60) {
+            this.setDead();
+        }
     }
 }

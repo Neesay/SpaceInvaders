@@ -18,8 +18,10 @@ import java.util.Set;
 public class GameDisplay {
 
     private final Canvas canvas;
+    private final int WIDTH;
+    private final Window WINDOW;
     private final GraphicsContext gc;
-    private final Game game;
+    private Game game;
     private Font gameFont;
 
     /**
@@ -30,12 +32,13 @@ public class GameDisplay {
      * @param width The width of the canvas
      * @param height The height of the canvas
      */
-    public GameDisplay(int width, int height) {
+    public GameDisplay(int width, int height, Window window) {
         canvas = new Canvas(width, height);
         canvas.setFocusTraversable(true);
         gc = canvas.getGraphicsContext2D();
 
-        game = new Game(width);
+        this.WINDOW = window;
+        this.WIDTH = width;
 
         try{
             gameFont = Font.loadFont(("file:./fonts/Pixels.ttf"), 60);
@@ -52,7 +55,10 @@ public class GameDisplay {
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                update(now);
+                if (isGameNotNull()) {
+                    update(now);
+                }
+
             }
         };
         gameLoop.start();
@@ -68,13 +74,14 @@ public class GameDisplay {
         gc.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        
-        displayScoreAndLives();
-        
-        displayPlayer();
-        displayAliens();
-        displayLasers();
-        displayBarriers();
+
+        if (isGameNotNull()) {
+            displayScoreAndLives();
+            displayPlayer();
+            displayAliens();
+            displayLasers();
+            displayBarriers();
+        }
     }
 
     /**
@@ -90,8 +97,9 @@ public class GameDisplay {
         gc.fillText(String.valueOf(player.getScore()), 130, 30);
         
         gc.setFill(Color.WHITE);
-        gc.fillText("Lives: ", 740,30); 
-        for (int i=0;i<player.getLives();i++){
+        gc.fillText("Lives: ", 740,30);
+        
+        for (int i = 0; i < player.getLives(); i++){
             gc.drawImage(player.getImgView().getImage(), 830 + 70*i, 10);    
         }
         
@@ -107,7 +115,7 @@ public class GameDisplay {
     } 
 
     private void displayPlayer() {
-        Player player = game.getPlayer();
+        Player player = game.getPlayer();   
         drawSprite(player);
     }
 
@@ -123,9 +131,9 @@ public class GameDisplay {
         for (Laser laser: lasers){
             gc.setFill(Color.RED);  
             gc.fillRect(laser.getLaser().getX(), 
-                        laser.getLaser().getY(), 
-                        laser.getLaser().getWidth(), 
-                        laser.getLaser().getHeight());
+            laser.getLaser().getY(), 
+            laser.getLaser().getWidth(), 
+            laser.getLaser().getHeight());
         }
     }
     
@@ -165,5 +173,17 @@ public class GameDisplay {
         drawScene();
     }    
 
-    public Canvas getCanvas() { return canvas; }   
+    public Canvas getCanvas() { return canvas; }
+
+    public void startGame() {
+        game = new Game(WIDTH, WINDOW);
+    }
+
+    public void stopGame() {
+        game = null;
+    }
+
+    public boolean isGameNotNull() {
+        return !(this.game == null);
+    }
 }

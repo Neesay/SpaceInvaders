@@ -29,7 +29,6 @@ public class Laser {
         destroy();
     }
 
-    
     public Rectangle getLaser() {
         return laser;
     }

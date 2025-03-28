@@ -9,17 +9,18 @@ import java.util.*;
 public class AlienSwarm {
 
     private List<Alien> aliens;
-    private boolean move_down_next = false;
-    private long last_shot_time = 0;
+    private List<Alien> largeAliens;
+    private boolean moveDownNext = false;
+    private long lastShotTime = 0;
     private final Random rand = new Random();
     private boolean spec = false;
-    private SpecialAlien specAlien;
 
     /**
      * Constructor for AlienSwarm which spawns a list of aliens.
      */
     public AlienSwarm() {
         aliens = new ArrayList<>();
+        largeAliens = new ArrayList<>();
         spawnAliens();
     }
 
@@ -30,8 +31,7 @@ public class AlienSwarm {
      * @param now Current time
      */
     public void update(List<Laser> lasers, long now) {
-        alienPosChecker();
-        alienMoveDown();
+        alienPositionConstraint();
         spawnSpecialAlien();
         shootUpdate(lasers, now);
     }
@@ -45,12 +45,19 @@ public class AlienSwarm {
 
         for (Alien a: aliens){
             a.move();
-            if (now - last_shot_time >= shoot_interval){
+            
+            if (now - lastShotTime >= shoot_interval){
                 aliensShoot(lasers);
-                last_shot_time = now;
+                lastShotTime = now;
             }
+            
             if (!(a.getDead())){
                 newAliens.add(a);
+            }
+            else{
+                if (a instanceof SpecialAlien){
+                    spec = false;
+                }
             }
         }
         aliens = newAliens;
@@ -70,6 +77,7 @@ public class AlienSwarm {
                 Alien alien = new LargeAlien(x, y, "file:./images/LargeAlien1.png", alienHeight, alienWidth);
                 alien.setRow(row);
                 alien.setColumn(col);
+                largeAliens.add(alien);
                 aliens.add(alien);
             }
         }
@@ -98,47 +106,41 @@ public class AlienSwarm {
     }
     
     private void spawnSpecialAlien() {
-        if ((!(spec)) && rand.nextDouble() < 0.05){
-            SpecialAlien alien = new SpecialAlien(1200, 50, "file:./images/SuperAlien.png", 60, 80);
+        if ((!(spec)) && rand.nextDouble() < 0.0005){
+            SpecialAlien alien = new SpecialAlien(1300, 50, "file:./images/SuperAlien.png", 60, 80);
             aliens.add(alien);
             spec = true;
         }
     }
 
-    public List<Alien> getAliens() {
-        return aliens;
-    }
+    public List<Alien> getAliens() { return aliens; }
 
-    private void alienPosChecker() {
+    private void alienPositionConstraint() {
         for (Alien a : aliens) {
             if ((a.getX() < 20 || a.getX() > 1100) && !(a instanceof SpecialAlien)) {
-                move_down_next = true;
+                moveDownNext = true;
                 break;
             }
+            
         }
-
-        if (move_down_next) {
+        if (moveDownNext) {
             for (Alien a : aliens) {
-                a.setY(a.getY() + 20);
-                a.setDirection(a.getDirection() * -1);
+                if (!(a instanceof SpecialAlien)) {
+                    a.setY(a.getY() + 20);
+                    a.setDirection(a.getDirection() * -1);    
+                }
+                
             }
-            move_down_next = false;
-        }
-    }
-
-    private void alienMoveDown() {
-        if (move_down_next){
-            for (Alien a:aliens){
-                a.setY(a.getY() + 2.0);
-            }
-            move_down_next = false;
+            moveDownNext = false;
         }
     }
 
     private void aliensShoot(List<Laser> lasers) {
-        Alien a = aliens.get(rand.nextInt(aliens.size()));
-        Laser laser = new Laser(a.getX() + (double) a.getWidth() /2, a.getY(), -9);
-        laser.setPlayer();
-        lasers.add(laser);
+        Alien a = largeAliens.get(rand.nextInt(largeAliens.size()));
+        if (!a.getDead()) {
+            Laser laser = new Laser(a.getX() + (double) a.getWidth() /2, a.getY() + 40, -9);
+            laser.setPlayer();
+            lasers.add(laser);
+        }
     }
 }
