@@ -85,12 +85,14 @@ public class Window extends Application {
             gameDisplay.stopGame();
         });
 
+        VBox.setMargin(quitButton, new javafx.geometry.Insets(-30, 0, 0, 0));
+
         
         bestScoreLabel = new Label("Best Score: 0");
         bestScoreLabel.setFont(pixelFont);
         bestScoreLabel.setTextFill(Color.CYAN);
         
-        menuBox = new VBox(20, titleImage, row1, row2, row3, row4, bestScoreLabel, playButton, quitButton);
+        menuBox = new VBox(15, titleImage, row1, row2, row3, row4, bestScoreLabel, playButton, quitButton);
         menuBox.setAlignment(javafx.geometry.Pos.CENTER);
         menuBox.setStyle("-fx-background-color: black;");
         menuBox.setPrefSize(WIDTH, HEIGHT);
