@@ -14,10 +14,10 @@ import java.util.Iterator;
  * A Space Invaders simulator that renders the game on GameDisplay class.
  * This class handles the game logic and updates the game state.
  *
- *
- * @author Yusuf Rahman, Yaseen Alam, Aditya Ranjan, Kasim Morsel
- * @version 1.1
+ * @author Yaseen Alam, Aditya Ranjan, Kasim Morsel, Yusuf Rahman
+ * @version 2.1
  */
+
 public class Game {
 
     private final Set <KeyCode> keysPressed;
@@ -42,6 +42,10 @@ public class Game {
         this.GAME_OVER = false;
     }
 
+    /**
+     * Starts up the game logic.
+     * @param canvasWidth Takes the width of the canvas.
+     */
     public void startGame(int canvasWidth) {
         String[] playerFrames = {"file:./images/player.png", "file:./images/player_hit.png"};
         this.player = new Player(580.0,900.0, playerFrames, 30,60);
@@ -65,6 +69,7 @@ public class Game {
     /**
      * Allow player to move left and right and shoot lasers.
      * Handle keyboard input
+     * @ param e Takes the relevant key event.
      */
     public void handleKeyPress(KeyEvent e) {
         Player player = getPlayer();
@@ -80,7 +85,8 @@ public class Game {
     }
 
     /**
-     * Stop player movement when key is released.
+     * Stop player movement when key is released and removes it from the set.
+     * @param e Takes relevant key event.
      */
     public void handleKeyRelease(KeyEvent e) {
         keysPressed.remove(e.getCode());
@@ -88,6 +94,11 @@ public class Game {
 
     /**
      * Create barriers evenly across the game landscape.
+     * @param canvasWidth Width of canvas
+     * @param y Y coordinate of the barrier
+     * @param pathFrames Array of strings containing the different paths of images. 
+     * @param height Height of barrier
+     * @param width Width of barrier
      */
     private List<Barrier> createBarriers(int canvasWidth, int y, String[] pathFrames, int height, int width) {
         List<Barrier> barriers = new ArrayList<>();
@@ -104,6 +115,7 @@ public class Game {
     /**
      * Check for collisions between the player, aliens and lasers.
      */
+    
     public void collisionDetection() {
         Iterator<Laser> lIterator = lasers.iterator();
 
@@ -140,7 +152,7 @@ public class Game {
 
                     if (lRect.intersects(alienRect.getBoundsInLocal())) {
                         a.setDead();
-                        player.setScore(a.getPoints());
+                        player.addScore(a.getPoints());
 
                         lIterator.remove();
                         break;
@@ -175,13 +187,25 @@ public class Game {
             }
         }
         
+        // Alien collision with player and with barriers.
+        
         for (Alien a:alienSwarm.getAliens()){
             Rectangle alienRect = a.getRect();
             if (alienRect.intersects(player.getRect().getBoundsInLocal())){
+                setGameOver();
                 player.switchToDieFrame();
                 window.showGameOverScreen();
             }
-        }
+            
+            Iterator<Barrier> bIterator = barriers.iterator();
+            while (bIterator.hasNext()){
+                Rectangle barrierRect = bIterator.next().getRect();
+                if (alienRect.intersects(barrierRect.getBoundsInLocal())){
+                    bIterator.remove();
+                }
+            }
+            
+        }    
     }
 
     /**
@@ -198,6 +222,10 @@ public class Game {
         }
     }
 
+    /**
+     * Creates next round.
+     */
+    
     public void nextRound() {
         this.alienSwarm = new AlienSwarm();
         this.lasers = new ArrayList<>();
@@ -216,20 +244,49 @@ public class Game {
         this.player.resetLives();
     }
 
+    /**
+     * Returns set of keys pressed.
+     */
+    
     public Set<KeyCode> getKeysPressed() { return keysPressed; }
 
+    /**
+     * Returns player
+     */
+    
     public Player getPlayer() { return player; }
 
+    /**
+     * Returns alien swarm.
+     */
+    
     public AlienSwarm getAlienSwarm() { return alienSwarm; }
 
+    
+    /**
+     * Returns lasers.
+     */
+    
     public List<Laser> getLasers() { return lasers; }
 
+    /**
+     * Returns barriers.
+     */
+    
     public List<Barrier> getBarriers() { return barriers; }
 
+    /**
+     * Returns whether game is over or not.
+     */
+    
     public void setGameOver() {
         GAME_OVER = true;
     }
 
+    /**
+     * Update the lasers in the game.
+     */
+    
     public boolean isItGameOver() {
         return !GAME_OVER;
     }

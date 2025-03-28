@@ -1,3 +1,10 @@
+/**
+ * Medium alien which has 20 points.
+ *
+ * @author Yaseen Alam, Aditya Ranjan, Kasim Morsel, Yusuf Rahman
+ * @version 2.1
+ */
+
 public class MediumAlien extends Alien {
     /**
      * Creates a medium alien with a specified position, image, and size.

@@ -7,9 +7,10 @@ import java.util.Random;
 /**
  * A group of aliens that can move and shoot lasers.
  *
- * @author Yaseen Alam, Aditya Ranjan
- * @version 1.3
+ * @author Yaseen Alam, Aditya Ranjan, Kasim Morsel, Yusuf Rahman
+ * @version 2.1
  */
+
 public class AlienSwarm {
     private List<Alien> aliens;
     private final List<Alien> largeAliens;
@@ -54,6 +55,8 @@ public class AlienSwarm {
 
     /**
      * Triggers the aliens to shoot lasers.
+     * @param lasers List of lasers contained.
+     * @param now Current time.
      */
     public void shootUpdate(List<Laser> lasers, long now) {
         long shoot_interval = 1000000000;
@@ -83,6 +86,10 @@ public class AlienSwarm {
         aliens = newAliens;
     }
 
+    /**
+     * Spawns aliens in at the start.
+     */
+    
     public void spawnAliens(){
         int startX = 100;
         int startY = 150;
@@ -128,6 +135,10 @@ public class AlienSwarm {
         }
     }
 
+    /**
+     * Every so often spawns a special alien.
+     */
+    
     private void spawnSpecialAlien(){
         if ((!(spec)) && rand.nextDouble() < 0.0005){
             String[] alienFrames = {"file:./images/SuperAlien.png", null};
@@ -137,10 +148,19 @@ public class AlienSwarm {
         }
     }
 
+    /**
+     * Returns the aliens list.
+     * @return aliens.
+     */
+    
     public List<Alien> getAliens() {
         return aliens;
     }
 
+    /**
+     * Checks alien's position to ensure they move down or change direction.
+     */
+    
     public void alienPositionConstraint() {
         for (Alien a : aliens) {
             if ((a.getX() < 20 || a.getX() > 1100) && !(a instanceof SpecialAlien)) {
@@ -161,6 +181,11 @@ public class AlienSwarm {
         }
     }
 
+    /**
+     * Manages the aliens shooting.
+     * @param lasers List of lasers.
+     */
+    
     private void aliensShoot(List<Laser> lasers){
         Alien a = largeAliens.get(rand.nextInt(largeAliens.size()));
         if (!a.getDead()) {
@@ -170,6 +195,10 @@ public class AlienSwarm {
         }
     }
 
+    /**
+     * Switches all alien frames to animate the aliens.
+     */
+    
     private void switchAllAlienFrames() {
         for (Alien alien : this.getAliens()) {
             if (!(alien instanceof SpecialAlien)){

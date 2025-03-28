@@ -1,3 +1,10 @@
+/**
+ * Small alien which has 10 points.
+ *
+ * @author Yaseen Alam, Aditya Ranjan, Kasim Morsel, Yusuf Rahman
+ * @version 2.1
+ */
+
 public class SmallAlien extends Alien {
     /**
      * Creates a small alien with a specified position, image, and size.

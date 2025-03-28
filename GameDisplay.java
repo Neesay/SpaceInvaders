@@ -13,9 +13,10 @@ import java.util.Set;
  * The game display and graphics will be handled here and rendered to the window class.
  * All the game objects will be drawn on the canvas.
  *
- * @author Aditya Ranjan, Yusuf Rahman, Yaseen Alam
- * @version 1.8
+ * @author Yaseen Alam, Aditya Ranjan, Kasim Morsel, Yusuf Rahman
+ * @version 2.1
  */
+
 public class GameDisplay {
 
     private final Canvas canvas;
@@ -39,7 +40,7 @@ public class GameDisplay {
         gc = canvas.getGraphicsContext2D();
 
         this.game = new Game(window);
-
+    
         this.WINDOW = window;
         this.WIDTH = width;
 
@@ -90,9 +91,9 @@ public class GameDisplay {
         if (game.isGameNotNull()) {
             displayScoreAndLives();
             displayPlayer();
+            displayBarriers();
             displayAliens();
             displayLasers();
-            displayBarriers();
         }
     }
 
@@ -126,11 +127,18 @@ public class GameDisplay {
         gc.drawImage(sprite.getImgView().getImage(), sprite.getX(), sprite.getY());
     }
 
+    /**
+     * Displays the player.
+     */
     private void displayPlayer() {
         Player player = game.getPlayer();
         drawSprite(player);
     }
 
+    /**
+     * Displays all the aliens
+     */
+    
     private void displayAliens() {
         AlienSwarm alienSwarm = game.getAlienSwarm();
         for (Alien alien : alienSwarm.getAliens()) {
@@ -138,6 +146,9 @@ public class GameDisplay {
         }
     }
 
+    /**
+     * Displays the lasers
+     */
     private void displayLasers() {
         List<Laser> lasers = game.getLasers();
         for (Laser laser: lasers){
@@ -149,6 +160,9 @@ public class GameDisplay {
         }
     }
 
+    /**
+     * Displays barriers.
+     */
     private void displayBarriers() {
         List<Barrier> barriers = game.getBarriers();
         for (Barrier barrier : barriers) {
@@ -187,19 +201,26 @@ public class GameDisplay {
         }
     }
 
+    /**
+     * Returns canvas.
+     */
+    
     public Canvas getCanvas() { return canvas; }
 
+    /**
+     * Starts the game.
+     */
+    
     public void startGame() {
         game = new Game(WINDOW);
         game.startGame(WIDTH);
     }
 
+    /**
+     * Stops the game.
+     */
+    
     public void stopGame() {
         game.setGameOver();
-    }
-
-    public void restartGame() {
-        game = new Game(WINDOW);
-        game.startGame(WIDTH);
     }
 }

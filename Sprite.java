@@ -5,9 +5,10 @@ import javafx.scene.shape.Rectangle;
 /**
  * A game entity that can be drawn on the screen.
  *
- * @author Aditya Ranjan, Yaseen Alam
- * @version 1.3
+ * @author Yaseen Alam, Aditya Ranjan, Kasim Morsel, Yusuf Rahman
+ * @version 2.1
  */
+
 public class Sprite {
     protected ImageView image;
     protected double x, y;
@@ -37,19 +38,35 @@ public class Sprite {
         // Create a rectangle for collision detection
         this.rect = new Rectangle(x, y, width, height);
     }
+    
+    /**
+     * Gets the X position of sprite.
+     */
 
     public double getX(){
         return this.x;
     }
 
+    /**
+     * Gets the Y position of sprite.
+     */
+    
     public double getY(){
         return this.y;
     }
 
+    /**
+     * Gets the height of sprite.
+     */
+    
     public int getHeight(){
         return this.height;
     }
 
+    /**
+     * Gets the width of sprite.
+     */
+    
     public int getWidth(){
         return this.width;
     }
@@ -71,14 +88,29 @@ public class Sprite {
         this.rect.setY(y);
         image.setY(y);
     }
+    
+    /**
+     * Returns imageview of sprite.
+     * @return this.image.
+     */
 
     public ImageView getImgView(){
         return this.image;
     }
+    
+    /**
+     * Returns rectangle of sprite.
+     * @return this.rect.
+     */
 
     public Rectangle getRect(){
         return this.rect;
     }
+    
+    /**
+     * Returns the array of paths of images.
+     * @return pathFrames. 
+     */
 
     public String[] getPathFrames() {
         return pathFrames;
@@ -89,9 +121,5 @@ public class Sprite {
      */
     public void setImg(String image) {
         this.image = new ImageView(new Image(image, this.width, this.height, false, true));
-    }
-
-    public Image getImage() {
-        return this.getImage();
     }
 }

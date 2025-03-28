@@ -21,8 +21,9 @@ import javafx.stage.Stage;
  * Generates the window where all game functions occur in.
  *
  * @author Yaseen Alam, Aditya Ranjan, Kasim Morsel, Yusuf Rahman
- * @version 1.4
+ * @version 2.1
  */
+
 public class Window extends Application {
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 950;
@@ -31,7 +32,13 @@ public class Window extends Application {
     private VBox menuBox;
     private VBox gameOverBox;
 
+    /**
+     * Initialises the start of the game.
+     * @param stage Requires a stage to display on.
+     */
+    
     @Override
+    
     public void start(Stage stage) {
         stage.setTitle(GAME_TITLE);
 
@@ -94,7 +101,7 @@ public class Window extends Application {
         backToMenuButton.setOnAction(e -> {
             gameOverBox.setVisible(false);
             menuBox.setVisible(true);
-            gameDisplay.restartGame();
+            gameDisplay.startGame();
         });
 
         Button gameOverQuitButton = createStyledButton("QUIT");
@@ -124,7 +131,14 @@ public class Window extends Application {
 
     /**
      * Creates a box displaying the score.
+     * 
+     * @param imagePath Path of the image
+     * @param text Displays relevant text
+     * @param textColor Color of the text
+     * @param font Specifies font of text
+     * @return row Returns the score row at the top to be drawn
      */
+    
     private HBox createScoreRow(String imagePath, String text, Color textColor, Font font) {
         ImageView alienIcon = new ImageView(new Image(imagePath));
         alienIcon.setFitWidth(30);
@@ -141,7 +155,10 @@ public class Window extends Application {
 
     /**
      * Creates a coloured button with hover effects.
+     * @param text Sets the relevant text for button
+     * @return button Returns the button object to be displayed.
      */
+    
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(Font.font("Pixels", 30));
@@ -151,6 +168,10 @@ public class Window extends Application {
         return button;
     }
 
+    /**
+     * Displays pop up menu when the about button is clicked from menu bar.
+     */
+    
     private void showAboutDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");
@@ -159,10 +180,18 @@ public class Window extends Application {
         alert.showAndWait();
     }
 
+    /**
+     * Displays the game over screen.
+     */
+    
     public void showGameOverScreen() {
         gameOverBox.setVisible(true);
     }
 
+    /**
+     * Starts the javafx application.
+     */
+    
     public static void main(String[] args) {
         launch(args);
     }
