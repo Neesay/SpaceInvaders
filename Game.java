@@ -140,7 +140,7 @@ public class Game {
 
                     if (lRect.intersects(alienRect.getBoundsInLocal())) {
                         a.setDead();
-                        player.setScore(a.getPoints());
+                        player.addScore(a.getPoints());
 
                         lIterator.remove();
                         break;

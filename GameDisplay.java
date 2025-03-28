@@ -151,12 +151,15 @@ public class GameDisplay {
 
     /**
      * Displays the lasers
+     */
     private void displayLasers() {
+        List<Laser> lasers = game.getLasers();
+        for (Laser laser: lasers){
             gc.setFill(Color.RED);
             gc.fillRect(laser.getLaser().getX(),
-            laser.getLaser().getY(),
-            laser.getLaser().getWidth(),
-            laser.getLaser().getHeight());
+                    laser.getLaser().getY(),
+                    laser.getLaser().getWidth(),
+                    laser.getLaser().getHeight());
         }
     }
 

@@ -31,6 +31,9 @@ public class Window extends Application {
     private static final String AUTHORS = "Aditya Ranjan, Kasim Morsel, Yaseen Alam, Yusuf Rahman";
     private VBox menuBox;
     private VBox gameOverBox;
+    private int bestScore = 0;
+    private Label bestScoreLabel;
+    private GameDisplay gameDisplay;
 
     /**
      * Initialises the start of the game.
@@ -60,7 +63,7 @@ public class Window extends Application {
         menuBar.getMenus().addAll(fileMenu, helpMenu);
 
         // Game display placeholder (empty canvas for now)
-        GameDisplay gameDisplay = new GameDisplay(WIDTH, HEIGHT, this);
+        gameDisplay = new GameDisplay(WIDTH, HEIGHT, this, bestScore);
         BorderPane gamePane = new BorderPane();
         gamePane.setTop(menuBar);
         gamePane.setCenter(gameDisplay.getCanvas());
@@ -146,6 +149,9 @@ public class Window extends Application {
      */
     
     private HBox createScoreRow(String imagePath, String text, Color textColor, Font font) {
+        ImageView alienIcon = new ImageView(new Image(imagePath));
+        alienIcon.setFitWidth(30);
+        alienIcon.setFitHeight(30);
 
         Label label = new Label(text);
         label.setFont(font);
