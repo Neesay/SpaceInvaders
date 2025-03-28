@@ -226,4 +226,13 @@ public class GameDisplay {
     public void stopGame() {
         game.setGameOver();
     }
+    
+    public int getCurrentScore() {
+        return game.getPlayer().getScore();
+    }
+    
+    public void setBestScore(int score) {
+        this.bestScore = score;
+    }
+
 }
