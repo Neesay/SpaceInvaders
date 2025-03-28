@@ -40,7 +40,7 @@ public class Game {
      * Allow player to move left and right and shoot lasers.
      * Handle keyboard input
      */
-    protected void handleKeyPress(KeyEvent e) {
+    public void handleKeyPress(KeyEvent e) {
         Player player = getPlayer();
         List<Laser> lasers = getLasers();
 
@@ -55,21 +55,20 @@ public class Game {
     /**
      * Stop player movement when key is released.
      */
-    protected void handleKeyRelease(KeyEvent e) {
-        keysPressed.remove(e.getCode());
-    }
+    public void handleKeyRelease(KeyEvent e) { keysPressed.remove(e.getCode()); }
 
     /**
      * Create barriers evenly across the game landscape.
      */
     private List<Barrier> createBarriers(int canvasWidth) {
         List<Barrier> barriers = new ArrayList<>();
-        double spacing = (canvasWidth - (NUMBER_OF_BARRIERS * 100)) / (NUMBER_OF_BARRIERS + 1);
+        int width = 125;
+        double spacing = (canvasWidth - (NUMBER_OF_BARRIERS * width)) / (NUMBER_OF_BARRIERS + 1);
         double y = 550;
 
         for (int i = 0; i < NUMBER_OF_BARRIERS; i++) {
-            double x = spacing + i * (spacing + 100);
-            Barrier barrier = new Barrier(x, y, "file:./images/barrier.png", 85, 125);
+            double x = spacing + i * (spacing + width);
+            Barrier barrier = new Barrier(x, y, "file:./images/barrier.png", 85, width);
             barriers.add(barrier);
         }
         return barriers;
@@ -78,7 +77,7 @@ public class Game {
     /**
      * Check for collisions between the player, aliens and lasers.
      */
-    public void CollisionDetection() {
+    public void collisionDetection() {
         Iterator<Laser> lIterator = lasers.iterator();
 
         while (lIterator.hasNext()) {
@@ -138,7 +137,7 @@ public class Game {
     /**
      * Update the lasers in the game.
      */
-    protected void updateLasers() {
+    public void updateLasers() {
         List<Laser> lasers = getLasers();
         ArrayList <Laser> newLasers = new ArrayList<>();
         for (Laser l: lasers){
@@ -150,13 +149,13 @@ public class Game {
         lasers = newLasers;
     }
 
-    protected Set<KeyCode> getKeysPressed() { return (Set<KeyCode>) keysPressed; }
+    public Set<KeyCode> getKeysPressed() { return (Set<KeyCode>) keysPressed; }
     
-    protected Player getPlayer() { return player; }
+    public Player getPlayer() { return player; }
 
-    protected AlienSwarm getAlienSwarm() { return alienSwarm; }
+    public AlienSwarm getAlienSwarm() { return alienSwarm; }
 
-    protected List<Laser> getLasers() { return lasers; }
+    public List<Laser> getLasers() { return lasers; }
 
-    protected List<Barrier> getBarriers() { return barriers; }
+    public List<Barrier> getBarriers() { return barriers; }
 }

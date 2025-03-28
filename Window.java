@@ -6,22 +6,13 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.animation.AnimationTimer;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * A view of the game. This class is responsible for displaying the game state.
  * Manages the window and the canvas.
  *
  * @author Aditya Ranjan, Yusuf Rahman
- * @version 1.0
+ * @version 1.1
  */
 public class Window extends Application {
 
@@ -29,10 +20,11 @@ public class Window extends Application {
     private static final int HEIGHT = 800;
     private static final String GAME_TITLE = "Space Invaders";
     private static final String AUTHORS = "Aditya Ranjan, Kasim Morsel, Yaseen Alam, Yusuf Rahman"; 
-    private static final int PLAYER_SIZE = 60;
 
     /**
      * Create a window for the game.
+     * Includes a menu bar with options to quit and show help.
+     * Also includes a game display panel.
      */
     @Override
     public void start(Stage stage) {
@@ -52,7 +44,6 @@ public class Window extends Application {
         MenuItem aboutItem = new MenuItem("About");
         aboutItem.setOnAction(e -> showAboutDialog());
         helpMenu.getItems().add(aboutItem);
-
         menuBar.getMenus().addAll(fileMenu, helpMenu);
 
         // Game Display Panel
@@ -67,11 +58,6 @@ public class Window extends Application {
         Scene scene = new Scene(root, WIDTH, HEIGHT);
         stage.setScene(scene);
         stage.setResizable(false);
-
-        stage.show();
-        
-        
-        // Start the game loop
         stage.show();
     }
 

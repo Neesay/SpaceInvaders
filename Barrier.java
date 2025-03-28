@@ -7,7 +7,7 @@
  */
 public class Barrier extends Sprite {
 
-  private int durability = 5;
+  private int durability = 8;
   
   /**
    * Create a barrier with a specified position, image, and size.
@@ -16,7 +16,7 @@ public class Barrier extends Sprite {
     super(x, y, path, height,width);
   }
 
-  protected int getDurability() { return durability; }
+  public int getDurability() { return durability; }
 
-  protected void decrementDurability() { durability--; }
+  public void decrementDurability() { durability--; }
 }
