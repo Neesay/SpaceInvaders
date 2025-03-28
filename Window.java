@@ -22,44 +22,18 @@ public class Window extends Application {
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 950;
     private static final String GAME_TITLE = "Space Invaders";
-    private static final String AUTHORS = "Aditya Ranjan, Kasim Morsel, Yaseen Alam, Yusuf Rahman";
-    private GameDisplay gameDisplay; // Canvas for game graphics
-    private MenuBar menuBar;
-    private VBox gameMenuBox;
+    private static final String AUTHORS = "Aditya Ranjan, Kasim Morsel, Yaseen Alam, Yusuf Rahman"; 
+    private VBox menuBox;
     private VBox gameOverBox;
 
     @Override
     public void start(Stage stage) {
         stage.setTitle(GAME_TITLE);
+
+        // Load font
         Font pixelFont = Font.loadFont("file:fonts/Pixels.ttf", 60);
 
-        // Initialise interface components
-        initialiseMenuBar(stage);
-        initialiseGameMenu(pixelFont, stage);
-        initialiseGameOver(stage);     
-        this.gameDisplay = new GameDisplay(WIDTH, HEIGHT, this); 
-
-        // Layout for game display and menu
-        BorderPane gamePane = new BorderPane();
-        gamePane.setTop(menuBar);
-        gamePane.setCenter(gameDisplay.getCanvas());
-        
-        // Use StackPane as a root for layering game, menu, and game over screen
-        StackPane root = new StackPane();
-        root.getChildren().addAll(gamePane, gameMenuBox, gameOverBox);
-
-        Scene scene = new Scene(root, WIDTH, HEIGHT + 20);
-        stage.setScene(scene);
-        stage.show();
-
-        // For testing purposes, you can show the game over screen with:
-        // gameOverBox.setVisible(true);
-    }
-
-    /**
-     * Sets up the menu bar with File and Help menus.
-     */
-    private void initialiseMenuBar(Stage stage) {
+        // Menu bar
         MenuBar menuBar = new MenuBar();
         Menu fileMenu = new Menu("File");
         MenuItem quitItem = new MenuItem("Quit");
@@ -70,27 +44,28 @@ public class Window extends Application {
         MenuItem aboutItem = new MenuItem("About");
         aboutItem.setOnAction(e -> showAboutDialog());
         helpMenu.getItems().add(aboutItem);
+
         menuBar.getMenus().addAll(fileMenu, helpMenu);
 
-        this.menuBar = menuBar;
-    }
+        // Game display placeholder (empty canvas for now)
+        GameDisplay gameDisplay = new GameDisplay(WIDTH, HEIGHT, this);
+        BorderPane gamePane = new BorderPane();
+        gamePane.setTop(menuBar);
+        gamePane.setCenter(gameDisplay.getCanvas());
 
-    /**
-     * Sets up the game menu to start playing.
-     */
-    private void initialiseGameMenu(Font pixelFont, Stage stage) {
+        // Menu content
         ImageView titleImage = new ImageView(new Image("file:images/titleSi.png"));
         titleImage.setFitHeight(200);
         titleImage.setPreserveRatio(true);
 
-        HBox row1 = createScoreRow("file:images/small.png", "= 10 PTS", Color.WHITE, pixelFont);
-        HBox row2 = createScoreRow("file:images/medium.png", "= 20 PTS", Color.WHITE, pixelFont);
-        HBox row3 = createScoreRow("file:images/large.png", "= 40 PTS", Color.WHITE, pixelFont);
+        HBox row1 = createScoreRow("file:images/SmallALien1.png", "= 10 PTS", Color.WHITE, pixelFont);
+        HBox row2 = createScoreRow("file:images/MediumAlien1.png", "= 20 PTS", Color.WHITE, pixelFont);
+        HBox row3 = createScoreRow("file:images/LargeAlien1.png", "= 40 PTS", Color.WHITE, pixelFont);
         HBox row4 = createScoreRow("file:images/SuperAlien.png", "= ??? PTS", Color.WHITE, pixelFont);
 
         Button playButton = createStyledButton("PLAY");
         playButton.setOnAction(e -> {
-            gameMenuBox.setVisible(false);
+            menuBox.setVisible(false);
             gameDisplay.startGame();
         });
 
@@ -100,18 +75,12 @@ public class Window extends Application {
             gameDisplay.stopGame();
         });
 
-        VBox menuBox = new VBox(20, titleImage, row1, row2, row3, row4, playButton, quitButton);
+        menuBox = new VBox(20, titleImage, row1, row2, row3, row4, playButton, quitButton);
         menuBox.setAlignment(javafx.geometry.Pos.CENTER);
         menuBox.setStyle("-fx-background-color: black;");
         menuBox.setPrefSize(WIDTH, HEIGHT);
 
-        this.gameMenuBox = menuBox;
-    }
-
-    /**
-     * Sets up the game over screen.
-     */
-    private void initialiseGameOver(Stage stage) {
+        // Game Over Screen
         Label gameOverLabel = new Label("GAME OVER");
         gameOverLabel.setFont(Font.font("Pixels", FontWeight.BOLD, 48));
         gameOverLabel.setTextFill(Color.RED);
@@ -119,8 +88,8 @@ public class Window extends Application {
         Button backToMenuButton = createStyledButton("BACK TO MENU");
         backToMenuButton.setOnAction(e -> {
             gameOverBox.setVisible(false);
-            gameMenuBox.setVisible(true);
-            gameDisplay.startGame();
+            menuBox.setVisible(true);
+            gameDisplay.restartGame();
         });
 
         Button gameOverQuitButton = createStyledButton("QUIT");
@@ -134,11 +103,23 @@ public class Window extends Application {
         gameOverBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.85);");
         gameOverBox.setPrefSize(WIDTH, HEIGHT);
         gameOverBox.setVisible(false);
+
+        BorderPane root = new BorderPane();
+        root.setTop(menuBar);
+
+        // Use StackPane for layering game, menu, and game over screen
+        StackPane stackPane = new StackPane();
+        stackPane.getChildren().addAll(gamePane, menuBox, gameOverBox);
+        root.setCenter(stackPane);
+
+        Scene scene = new Scene(root, WIDTH, HEIGHT + 20);
+        stage.setScene(scene);
+        stage.show();
+
+        // For testing purposes, you can show the game over screen with:
+        // gameOverBox.setVisible(true);
     }
 
-    /**
-     * Creates a box displaying the score
-     */
     private HBox createScoreRow(String imagePath, String text, Color textColor, Font font) {
         ImageView alienIcon = new ImageView(new Image(imagePath));
         alienIcon.setFitWidth(30);
@@ -153,9 +134,6 @@ public class Window extends Application {
         return row;
     }
 
-    /**
-     * Creates a coloured button with hover effects.
-     */
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(Font.font("Pixels", 30));
@@ -164,7 +142,6 @@ public class Window extends Application {
         button.setOnMouseExited(e -> button.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Pixels'; -fx-font-size: 30px; -fx-cursor: hand;"));
         return button;
     }
-
 
     private void showAboutDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

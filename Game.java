@@ -1,13 +1,14 @@
+import javafx.animation.PauseTransition;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * A Space Invaders simulator that renders the game on GameDisplay class.
@@ -24,10 +25,9 @@ public class Game {
     private final AlienSwarm alienSwarm;
     private final List <Laser> lasers;
     private final List<Barrier> barriers;
-    private List<Rectangle> blocks;
     private static final int NUMBER_OF_BARRIERS = 3;
     private final Window window;
-    private ArrayList <String> shape;
+    private boolean GAME_OVER;
 
     /**
      * Constructor initialises the begining game state.
@@ -35,18 +35,19 @@ public class Game {
     public Game(int canvasWidth, Window window) {
         this.window = window;
         keysPressed = new HashSet<>();
-        player = new Player(600.0,900.0, "file:./images/player.png", 30,60);
+        String[] playerFrames = {"file:./images/player.png", "file:./images/player_hit.png"};
+        player = new Player(580.0,900.0, playerFrames, 30,60);
         alienSwarm = new AlienSwarm();
         lasers = new ArrayList<>();
-        barriers = createBarriers(canvasWidth, 700, "file:./images/barrier.png", 85, 125);
-        this.shape = new ArrayList <> (Arrays.asList("  xxxxxxx"," xxxxxxxxx","xxxxxxxxxxx","xxxxxxxxxxx","xxxxxxxxxxx","xxx     xxx","xx       xx"));
+        barriers = createBarriers(canvasWidth);
+        GAME_OVER = false;
     }
 
     /**
      * Allow player to move left and right and shoot lasers.
      * Handle keyboard input
      */
-    public void handleKeyPress(KeyEvent e) {
+    protected void handleKeyPress(KeyEvent e) {
         Player player = getPlayer();
         List<Laser> lasers = getLasers();
 
@@ -61,27 +62,31 @@ public class Game {
     /**
      * Stop player movement when key is released.
      */
-    public void handleKeyRelease(KeyEvent e) { keysPressed.remove(e.getCode()); }
+    protected void handleKeyRelease(KeyEvent e) {
+        keysPressed.remove(e.getCode());
+    }
 
     /**
      * Create barriers evenly across the game landscape.
      */
-    private List<Barrier> createBarriers(int canvasWidth, int y, String path, int height, int width) {
+    private List<Barrier> createBarriers(int canvasWidth) {
         List<Barrier> barriers = new ArrayList<>();
-        double spacing = (double) (canvasWidth - (NUMBER_OF_BARRIERS * width)) / (NUMBER_OF_BARRIERS + 1);
+        double spacing = (double) (canvasWidth - (NUMBER_OF_BARRIERS * 100)) / (NUMBER_OF_BARRIERS + 1);
+        double y = 700;
 
         for (int i = 0; i < NUMBER_OF_BARRIERS; i++) {
-            double x = spacing + i * (spacing + width);
-            Barrier barrier = new Barrier(x, y, path, height, width);
+            double x = spacing + i * (spacing + 100);
+            String[] barrierFrames = {"file:./images/barrier1.png", null};
+            Barrier barrier = new Barrier(x, y, barrierFrames, 85, 125);
             barriers.add(barrier);
         }
         return barriers;
     }
-    
+
     /**
      * Check for collisions between the player, aliens and lasers.
      */
-    public void collisionDetection() {
+    public void CollisionDetection() {
         Iterator<Laser> lIterator = lasers.iterator();
 
         while (lIterator.hasNext()) {
@@ -128,9 +133,22 @@ public class Game {
                 if (lRect.intersects(playerRect.getBoundsInLocal())) {
                     player.decrementLives();
                     lIterator.remove();
+                    //help with this
+                    player.switchToDieFrame();
+
+                    // Pause before switching back to normal frame
+                    PauseTransition pause = new PauseTransition(Duration.millis(200));
+                    pause.setOnFinished(e -> {
+                        if (!isItGameOver()) {
+                            player.switchToAliveFrame();
+                        }
+                    });
+                    pause.play();
+
                     if (player.getLives() <= 0) {
+                        setGameOver();
+                        player.switchToDieFrame();
                         window.showGameOverScreen();
-                        
                     }
                 }
             }
@@ -140,7 +158,7 @@ public class Game {
     /**
      * Update the lasers in the game.
      */
-    public void updateLasers() {
+    protected void updateLasers() {
         List<Laser> lasers = getLasers();
         ArrayList <Laser> newLasers = new ArrayList<>();
         for (Laser l: lasers){
@@ -153,11 +171,19 @@ public class Game {
 
     protected Set<KeyCode> getKeysPressed() { return keysPressed; }
     
-    public Player getPlayer() { return player; }
+    protected Player getPlayer() { return player; }
 
-    public AlienSwarm getAlienSwarm() { return alienSwarm; }
+    protected AlienSwarm getAlienSwarm() { return alienSwarm; }
 
-    public List<Laser> getLasers() { return lasers; }
+    protected List<Laser> getLasers() { return lasers; }
 
-    public List<Barrier> getBarriers() { return barriers; }
+    protected List<Barrier> getBarriers() { return barriers; }
+
+    public void setGameOver() {
+        GAME_OVER = true;
+    }
+
+    public boolean isItGameOver() {
+        return GAME_OVER;
+    }
 }

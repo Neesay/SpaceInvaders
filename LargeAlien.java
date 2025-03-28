@@ -1,10 +1,16 @@
 public class LargeAlien extends Alien {
     /**
-     * Creates a large alien with a specified position, image, and size.
+     * Constructor for objects of class Alien
+     *
+     * @param x
+     * @param y
+     * @param pathFrames
+     * @param height
+     * @param width
      */
-    public LargeAlien(int x, int y, String path, int height, int width) {
-        super(x, y, path, height, width);
+    public LargeAlien(int x, int y, String[] pathFrames, int height, int width) {
+        super(x, y, pathFrames, height, width);
 
-        super.points = 40;
+        points = 40;
     }
 }

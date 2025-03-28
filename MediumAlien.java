@@ -1,10 +1,16 @@
 public class MediumAlien extends Alien {
     /**
-     * Creates a medium alien with a specified position, image, and size.
+     * Constructor for objects of class Alien
+     *
+     * @param x
+     * @param y
+     * @param pathFrames
+     * @param height
+     * @param width
      */
-    public MediumAlien(int x, int y, String path, int height, int width) {
-        super(x, y, path, height, width);
+    public MediumAlien(int x, int y, String[] pathFrames, int height, int width) {
+        super(x, y, pathFrames, height, width);
 
-        super.points = 20;
+        points = 20;
     }
 }

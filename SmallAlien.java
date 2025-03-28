@@ -1,11 +1,16 @@
 public class SmallAlien extends Alien {
     /**
-     * Creates a small alien with a specified position, image, and size.
+     * Constructor for objects of class Alien
+     *
+     * @param x
+     * @param y
+     * @param pathFrames
+     * @param height
+     * @param width
      */
-    public SmallAlien(int x, int y, String path, int height, int width) {
-        super(x, y, path, height, width);
-        
-        super.points = 10;
+    public SmallAlien(int x, int y, String[] pathFrames, int height, int width) {
+        super(x, y, pathFrames, height, width);
+        points = 10;
     }
     
 }
