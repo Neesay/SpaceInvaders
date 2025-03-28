@@ -87,7 +87,14 @@ public class Window extends Application {
             gameDisplay.stopGame();
         });
 
-        menuBox = new VBox(20, titleImage, row1, row2, row3, row4, playButton, quitButton);
+        VBox.setMargin(quitButton, new javafx.geometry.Insets(-30, 0, 0, 0));
+
+        
+        bestScoreLabel = new Label("Best Score: 0");
+        bestScoreLabel.setFont(pixelFont);
+        bestScoreLabel.setTextFill(Color.CYAN);
+        
+        menuBox = new VBox(15, titleImage, row1, row2, row3, row4, bestScoreLabel, playButton, quitButton);
         menuBox.setAlignment(javafx.geometry.Pos.CENTER);
         menuBox.setStyle("-fx-background-color: black;");
         menuBox.setPrefSize(WIDTH, HEIGHT);
@@ -134,15 +141,11 @@ public class Window extends Application {
      * 
      * @param imagePath Path of the image
      * @param text Displays relevant text
-     * @param textColor Color of the text
      * @param font Specifies font of text
      * @return row Returns the score row at the top to be drawn
      */
     
     private HBox createScoreRow(String imagePath, String text, Color textColor, Font font) {
-        ImageView alienIcon = new ImageView(new Image(imagePath));
-        alienIcon.setFitWidth(30);
-        alienIcon.setFitHeight(30);
 
         Label label = new Label(text);
         label.setFont(font);

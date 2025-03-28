@@ -4,10 +4,9 @@ import javafx.scene.image.ImageView;
 /**
  * A barrier that absorbs laser shots.
  *
- * @author Yaseen Alam, Aditya Ranjan, Kasim Morsel, Yusuf Rahman
- * @version 2.1
+ * @author Yusuf Rahman
+ * @version 1.1
  */
-
 public class Barrier extends Sprite {
 
   private int durability = 8;
@@ -28,23 +27,10 @@ public class Barrier extends Sprite {
     image.setY(y);
   }
 
-  /**
-  * Returns durability of the barrier.
-  * @return durability.
-  */
-    
   public int getDurability() { return durability; }
 
-  /**
-  * Reduces durability of barriers.
-  */
- 
   public void decrementDurability() { durability--; }
 
-  /**
-  * Switches frame of barriers.
-  */
- 
   public void switchFrames() {
     String nextFrame = getPathFrames()[durability + 1];
     if (nextFrame != null && !nextFrame.isEmpty()) {

@@ -25,6 +25,7 @@ public class GameDisplay {
     private final GraphicsContext gc;
     private Game game;
     private Font gameFont;
+    private int bestScore;
 
     /**
      * Constructor that creates a canvas and initializes the game.
@@ -34,13 +35,12 @@ public class GameDisplay {
      * @param width The width of the canvas
      * @param height The height of the canvas
      */
-    public GameDisplay(int width, int height, Window window) {
+    public GameDisplay(int width, int height, Window window, int bestScore) {
         canvas = new Canvas(width, height);
         canvas.setFocusTraversable(true);
         gc = canvas.getGraphicsContext2D();
-
+        this.bestScore = bestScore;
         this.game = new Game(window);
-    
         this.WINDOW = window;
         this.WIDTH = width;
 
@@ -110,6 +110,12 @@ public class GameDisplay {
         gc.fillText(String.valueOf(player.getScore()), 130, 30);
 
         gc.setFill(Color.WHITE);
+        gc.fillText("High Score: ", 400, 30);
+        gc.setFill(Color.CYAN);
+        gc.fillText(String.valueOf(bestScore), 600, 30);
+
+
+        gc.setFill(Color.WHITE);
         gc.fillText("Lives: ", 740,30);
 
         for (int i = 0; i < player.getLives(); i++){
@@ -127,9 +133,6 @@ public class GameDisplay {
         gc.drawImage(sprite.getImgView().getImage(), sprite.getX(), sprite.getY());
     }
 
-    /**
-     * Displays the player.
-     */
     private void displayPlayer() {
         Player player = game.getPlayer();
         drawSprite(player);
@@ -148,10 +151,7 @@ public class GameDisplay {
 
     /**
      * Displays the lasers
-     */
     private void displayLasers() {
-        List<Laser> lasers = game.getLasers();
-        for (Laser laser: lasers){
             gc.setFill(Color.RED);
             gc.fillRect(laser.getLaser().getX(),
             laser.getLaser().getY(),
