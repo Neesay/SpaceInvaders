@@ -48,6 +48,7 @@ public class Game {
         this.alienSwarm = new AlienSwarm();
         this.lasers = new ArrayList<>();
         String[] barrierFrames = {
+                "file:./images/barrier1.png",
                 "file:./images/barrier8.png",
                 "file:./images/barrier7.png",
                 "file:./images/barrier6.png",
@@ -201,6 +202,7 @@ public class Game {
         this.alienSwarm = new AlienSwarm();
         this.lasers = new ArrayList<>();
         String[] barrierFrames = {
+                "file:./images/barrier1.png",
                 "file:./images/barrier8.png",
                 "file:./images/barrier7.png",
                 "file:./images/barrier6.png",

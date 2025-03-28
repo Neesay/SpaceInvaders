@@ -32,7 +32,7 @@ public class Barrier extends Sprite {
   public void decrementDurability() { durability--; }
 
   public void switchFrames() {
-    String nextFrame = getPathFrames()[durability - 1];
+    String nextFrame = getPathFrames()[durability + 1];
     if (nextFrame != null && !nextFrame.isEmpty()) {
       setImg(nextFrame);
     }
