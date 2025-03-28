@@ -184,6 +184,6 @@ public class GameDisplay {
     }
 
     public boolean isGameNotNull() {
-        return !(this.game == null);
+        return (this.game != null);
     }
 }

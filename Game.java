@@ -38,7 +38,7 @@ public class Game {
         player = new Player(600.0,900.0, "file:./images/player.png", 30,60);
         alienSwarm = new AlienSwarm();
         lasers = new ArrayList<>();
-        barriers = createBarriers(canvasWidth);
+        barriers = createBarriers(canvasWidth, 700, "file:./images/barrier.png", 85, 125);
         this.shape = new ArrayList <> (Arrays.asList("  xxxxxxx"," xxxxxxxxx","xxxxxxxxxxx","xxxxxxxxxxx","xxxxxxxxxxx","xxx     xxx","xx       xx"));
     }
 
@@ -66,15 +66,13 @@ public class Game {
     /**
      * Create barriers evenly across the game landscape.
      */
-    private List<Barrier> createBarriers(int canvasWidth) {
+    private List<Barrier> createBarriers(int canvasWidth, int y, String path, int height, int width) {
         List<Barrier> barriers = new ArrayList<>();
-        int width = 125;
         double spacing = (double) (canvasWidth - (NUMBER_OF_BARRIERS * width)) / (NUMBER_OF_BARRIERS + 1);
-        double y = 700;
 
         for (int i = 0; i < NUMBER_OF_BARRIERS; i++) {
             double x = spacing + i * (spacing + width);
-            Barrier barrier = new Barrier(x, y, "file:./images/barrier.png", 85, width);
+            Barrier barrier = new Barrier(x, y, path, height, width);
             barriers.add(barrier);
         }
         return barriers;
