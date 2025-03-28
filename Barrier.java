@@ -4,8 +4,8 @@ import javafx.scene.image.ImageView;
 /**
  * A barrier that absorbs laser shots.
  *
- * @author Yusuf Rahman
- * @version 1.1
+ * @author Yaseen Alam, Aditya Ranjan, Kasim Morsel, Yusuf Rahman
+ * @version 2.1
  */
 public class Barrier extends Sprite {
 
