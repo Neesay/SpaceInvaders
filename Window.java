@@ -194,6 +194,12 @@ public class Window extends Application {
      */
     
     public void showGameOverScreen() {
+        int currentScore = gameDisplay.getCurrentScore();
+        if (currentScore > bestScore) {
+            bestScore = currentScore;
+            gameDisplay.setBestScore(bestScore);
+        }
+        bestScoreLabel.setText("High Score: " + bestScore);
         gameOverBox.setVisible(true);
     }
 
