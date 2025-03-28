@@ -1,4 +1,3 @@
-
 /**
  * Write a description of class Player here.
  *
@@ -13,7 +12,7 @@ public class Player extends Sprite
     private long laser_time = System.currentTimeMillis();
     private int lives;
     private int score;
-    
+
     /**
      * Constructor for objects of class Player
      */
@@ -24,11 +23,11 @@ public class Player extends Sprite
         this.lives = 3;
         this.score = 0;
     }
-    
+
     public int getSpeed(){
         return speed;
     }
-    
+
     private void recharge(){
         if (!(this.ready)){
             long current_time = System.currentTimeMillis();
@@ -38,34 +37,39 @@ public class Player extends Sprite
             }
         }
     }
-    
+
     public void update(){
         recharge();
     }
-    
+
     public boolean getReady(){
         return ready;
     }
-    
+
     public void setReady(boolean b){
         ready = b;
     }
-    
+
     public void decrementLives(){
         this.lives --;
     }
-    
+
     public int getLives(){
         return this.lives;
     }
-    
+
     public int getScore(){
         return this.score;
     }
-    
+
     public void setScore(int amount){
         this.score += amount;
     }
+
+    public void resetLives() {
+        this.lives = 3;
+    }
+
     public void switchToDieFrame() {
         setImg(getPathFrames()[1]);
     }

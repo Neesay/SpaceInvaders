@@ -5,14 +5,16 @@ import javafx.scene.input.*;
 import javafx.scene.text.Font;
 import javafx.animation.AnimationTimer;
 
+import javafx.scene.image.Image;
 import java.util.List;
 import java.util.Set;
 
 /**
  * The game display and graphics will be handled here and rendered to the window class.
+ * All the game objects will be drawn on the canvas.
  *
- * @author 
- * @version (a version number or a date)
+ * @author Aditya Ranjan, Yusuf Rahman, Yaseen Alam
+ * @version 1.8
  */
 public class GameDisplay {
 
@@ -24,15 +26,22 @@ public class GameDisplay {
     private Font gameFont;
 
     /**
-     * Constructor for objects of class GameDisplay
+     * Constructor that creates a canvas and initializes the game.
+     * Sets up the key event handlers for movement and laser shooting.
+     * Creates an animation timer to update the game state and redraw the scene.
+     *
+     * @param width The width of the canvas
+     * @param height The height of the canvas
      */
     public GameDisplay(int width, int height, Window window) {
         canvas = new Canvas(width, height);
         canvas.setFocusTraversable(true);
         gc = canvas.getGraphicsContext2D();
 
-        WINDOW = window;
-        WIDTH = width;
+        this.game = new Game(window);
+
+        this.WINDOW = window;
+        this.WIDTH = width;
 
         try{
             gameFont = Font.loadFont(("file:./fonts/Pixels.ttf"), 60);
@@ -41,28 +50,27 @@ public class GameDisplay {
             gameFont = Font.font("Arial",460);
         }
 
-        startGame();
-
         canvas.setOnKeyPressed(e -> {
-            if (!game.isItGameOver()) {
+            if (game.isGameNotNull()) {
                 game.handleKeyPress(e);
             }
         });
 
         canvas.setOnKeyReleased(e -> {
-            if (!game.isItGameOver()) {
+            if (game.isGameNotNull()) {
                 game.handleKeyRelease(e);
             }
         });
 
+        // Draw the sprites and start the game loop to update the game state.
         drawScene();
 
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 update(now);
-                if (game.isItGameOver()) {
-                    game.getKeysPressed().clear();
+                if (game.isGameNotNull() && game.isRoundOver()) {
+                    game.nextRound();
                 }
             }
         };
@@ -70,8 +78,8 @@ public class GameDisplay {
     }
 
     /**
-     * Draw the scene.
-     *
+     * Set the background and draw the score and lives.
+     * Draw the game objects/sprites on the canvas.
      */
     private void drawScene() {
         // Background
@@ -79,7 +87,7 @@ public class GameDisplay {
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        if (true) {
+        if (game.isGameNotNull()) {
             displayScoreAndLives();
             displayPlayer();
             displayAliens();
@@ -88,6 +96,9 @@ public class GameDisplay {
         }
     }
 
+    /**
+     * Draws the score and lives on the canvas.
+     */
     private void displayScoreAndLives() {
         Player player = game.getPlayer();
 
@@ -96,26 +107,27 @@ public class GameDisplay {
         gc.fillText("Score: ", 40, 30);
         gc.setFill(Color.CYAN);
         gc.fillText(String.valueOf(player.getScore()), 130, 30);
-        
+
         gc.setFill(Color.WHITE);
         gc.fillText("Lives: ", 740,30);
-        
+
         for (int i = 0; i < player.getLives(); i++){
-            gc.drawImage(player.getImgView().getImage(), 830 + 70*i, 10);    
+            Image lifeImage = new Image("file:images/player.png");
+            gc.drawImage(lifeImage, 830 + 70 * i, 10);
         }
-        
     }
 
     /**
      * Draw the sprite on the canvas.
+     *
      * @param sprite can be Player, Alien, Barrier
-     */ 
+     */
     private void drawSprite(Sprite sprite) {
         gc.drawImage(sprite.getImgView().getImage(), sprite.getX(), sprite.getY());
-    } 
+    }
 
     private void displayPlayer() {
-        Player player = game.getPlayer();   
+        Player player = game.getPlayer();
         drawSprite(player);
     }
 
@@ -129,14 +141,14 @@ public class GameDisplay {
     private void displayLasers() {
         List<Laser> lasers = game.getLasers();
         for (Laser laser: lasers){
-            gc.setFill(Color.RED);  
-            gc.fillRect(laser.getLaser().getX(), 
-            laser.getLaser().getY(), 
-            laser.getLaser().getWidth(), 
-            laser.getLaser().getHeight());
+            gc.setFill(Color.RED);
+            gc.fillRect(laser.getLaser().getX(),
+                    laser.getLaser().getY(),
+                    laser.getLaser().getWidth(),
+                    laser.getLaser().getHeight());
         }
     }
-    
+
     private void displayBarriers() {
         List<Barrier> barriers = game.getBarriers();
         for (Barrier barrier : barriers) {
@@ -150,32 +162,36 @@ public class GameDisplay {
      *
      * @param now The current time
      */
-    public void update(long now) {
-        Player player = game.getPlayer();
-        AlienSwarm alienSwarm = game.getAlienSwarm();
-        List<Laser> lasers = game.getLasers();
-        Set<KeyCode> keysPressed = game.getKeysPressed();
+    private void update(long now) {
+        if (game.isGameNotNull()) {
+            Player player = game.getPlayer();
+            AlienSwarm alienSwarm = game.getAlienSwarm();
+            List<Laser> lasers = game.getLasers();
+            Set<KeyCode> keysPressed = game.getKeysPressed();
 
-        boolean withinBoundary = player.getX() + player.getWidth() < canvas.getWidth();
+            // Handle player movement
+            boolean withinBoundary = player.getX() + player.getWidth() < canvas.getWidth();
 
-        if (keysPressed.contains(KeyCode.LEFT) && player.getX() > 40){
-            player.setX(player.getX() - player.getSpeed());
+            if (keysPressed.contains(KeyCode.LEFT) && player.getX() > 40){
+                player.setX(player.getX() - player.getSpeed());
+            }
+            else if (keysPressed.contains(KeyCode.RIGHT) && withinBoundary && player.getX() < 1100){
+                player.setX(player.getX() + player.getSpeed());
+            }
+
+            player.update();
+            game.collisionDetection();
+            game.updateLasers();
+            alienSwarm.update(lasers, now);
+            drawScene();
         }
-        else if (keysPressed.contains(KeyCode.RIGHT) && withinBoundary && player.getX() < 1100){
-            player.setX(player.getX() + player.getSpeed());            
-        }
-        
-        player.update();
-        game.CollisionDetection();
-        game.updateLasers();
-        alienSwarm.update(lasers, now);
-        drawScene();
-    }    
+    }
 
     public Canvas getCanvas() { return canvas; }
 
     public void startGame() {
-        game = new Game(WIDTH, WINDOW);
+        game = new Game(WINDOW);
+        game.startGame(WIDTH);
     }
 
     public void stopGame() {
@@ -183,10 +199,7 @@ public class GameDisplay {
     }
 
     public void restartGame() {
-        game = new Game(WIDTH, WINDOW);
-    }
-
-    public boolean isGameNotNull() {
-        return !(this.game == null);
+        game = new Game(WINDOW);
+        game.startGame(WIDTH);
     }
 }
