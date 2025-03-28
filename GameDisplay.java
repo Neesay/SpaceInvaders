@@ -24,6 +24,7 @@ public class GameDisplay {
     private final GraphicsContext gc;
     private Game game;
     private Font gameFont;
+    private int bestScore;
 
     /**
      * Constructor that creates a canvas and initializes the game.
@@ -33,13 +34,12 @@ public class GameDisplay {
      * @param width The width of the canvas
      * @param height The height of the canvas
      */
-    public GameDisplay(int width, int height, Window window) {
+    public GameDisplay(int width, int height, Window window, int bestScore) {
         canvas = new Canvas(width, height);
         canvas.setFocusTraversable(true);
         gc = canvas.getGraphicsContext2D();
-
+        this.bestScore = bestScore;
         this.game = new Game(window);
-
         this.WINDOW = window;
         this.WIDTH = width;
 
@@ -107,6 +107,12 @@ public class GameDisplay {
         gc.fillText("Score: ", 40, 30);
         gc.setFill(Color.CYAN);
         gc.fillText(String.valueOf(player.getScore()), 130, 30);
+
+        gc.setFill(Color.WHITE);
+        gc.fillText("High Score: ", 400, 30);
+        gc.setFill(Color.YELLOW);
+        gc.fillText(String.valueOf(bestScore), 600, 30);
+
 
         gc.setFill(Color.WHITE);
         gc.fillText("Lives: ", 740,30);
@@ -202,4 +208,14 @@ public class GameDisplay {
         game = new Game(WINDOW);
         game.startGame(WIDTH);
     }
+    
+    public int getCurrentScore() {
+        return game.getPlayer().getScore();
+    }
+    
+    public void setBestScore(int score) {
+        this.bestScore = score;
+    }
+
+
 }

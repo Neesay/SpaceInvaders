@@ -30,6 +30,11 @@ public class Window extends Application {
     private static final String AUTHORS = "Aditya Ranjan, Kasim Morsel, Yaseen Alam, Yusuf Rahman";
     private VBox menuBox;
     private VBox gameOverBox;
+    private int bestScore = 0;
+    private Label bestScoreLabel;
+    private GameDisplay gameDisplay;
+
+
 
     @Override
     public void start(Stage stage) {
@@ -53,7 +58,7 @@ public class Window extends Application {
         menuBar.getMenus().addAll(fileMenu, helpMenu);
 
         // Game display placeholder (empty canvas for now)
-        GameDisplay gameDisplay = new GameDisplay(WIDTH, HEIGHT, this);
+        gameDisplay = new GameDisplay(WIDTH, HEIGHT, this, bestScore);
         BorderPane gamePane = new BorderPane();
         gamePane.setTop(menuBar);
         gamePane.setCenter(gameDisplay.getCanvas());
@@ -80,7 +85,12 @@ public class Window extends Application {
             gameDisplay.stopGame();
         });
 
-        menuBox = new VBox(20, titleImage, row1, row2, row3, row4, playButton, quitButton);
+        
+        bestScoreLabel = new Label("Best Score: 0");
+        bestScoreLabel.setFont(pixelFont);
+        bestScoreLabel.setTextFill(Color.CYAN);
+        
+        menuBox = new VBox(20, titleImage, row1, row2, row3, row4, playButton, quitButton, bestScoreLabel);
         menuBox.setAlignment(javafx.geometry.Pos.CENTER);
         menuBox.setStyle("-fx-background-color: black;");
         menuBox.setPrefSize(WIDTH, HEIGHT);
@@ -160,8 +170,16 @@ public class Window extends Application {
     }
 
     public void showGameOverScreen() {
+        int currentScore = gameDisplay.getCurrentScore();
+        if (currentScore > bestScore) {
+            bestScore = currentScore;
+            gameDisplay.setBestScore(bestScore);
+        }
+        bestScoreLabel.setText("High Score: " + bestScore); // 🟢 Update label
         gameOverBox.setVisible(true);
     }
+
+
 
     public static void main(String[] args) {
         launch(args);
