@@ -74,6 +74,9 @@ public class AlienSwarm {
                 if (a instanceof SpecialAlien){
                     spec = false;
                 }
+                
+                
+                
             }
         }
 

@@ -143,9 +143,9 @@ public class GameDisplay {
         for (Laser laser: lasers){
             gc.setFill(Color.RED);
             gc.fillRect(laser.getLaser().getX(),
-                    laser.getLaser().getY(),
-                    laser.getLaser().getWidth(),
-                    laser.getLaser().getHeight());
+            laser.getLaser().getY(),
+            laser.getLaser().getWidth(),
+            laser.getLaser().getHeight());
         }
     }
 
@@ -163,7 +163,7 @@ public class GameDisplay {
      * @param now The current time
      */
     private void update(long now) {
-        if (game.isGameNotNull()) {
+        if (game.isGameNotNull() && game.isItGameOver()) {
             Player player = game.getPlayer();
             AlienSwarm alienSwarm = game.getAlienSwarm();
             List<Laser> lasers = game.getLasers();

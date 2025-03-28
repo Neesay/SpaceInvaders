@@ -26,7 +26,7 @@ public abstract class Alien extends Sprite {
         super(x,y,pathFrames,height,width);
         hp = 1;
         this.dead = false;
-        this.speed = 0.25;
+        this.speed = 0.5;
         this.direction = 1;
     }
 
