@@ -17,6 +17,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+/**
+ * Generates the window where all game functions occur in.
+ *
+ * @author Yaseen Alam, Aditya Ranjan, Kasim Morsel, Yusuf Rahman
+ * @version 1.4
+ */
 public class Window extends Application {
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 950;
@@ -81,7 +87,7 @@ public class Window extends Application {
 
         // Game Over Screen
         Label gameOverLabel = new Label("GAME OVER");
-        gameOverLabel.setFont(Font.font("Pixels", FontWeight.BOLD, 48));
+        gameOverLabel.setFont(Font.font("Pixels", FontWeight.BOLD, 250));
         gameOverLabel.setTextFill(Color.RED);
 
         Button backToMenuButton = createStyledButton("BACK TO MENU");
@@ -116,6 +122,9 @@ public class Window extends Application {
         stage.show();
     }
 
+    /**
+     * Creates a box displaying the score.
+     */
     private HBox createScoreRow(String imagePath, String text, Color textColor, Font font) {
         ImageView alienIcon = new ImageView(new Image(imagePath));
         alienIcon.setFitWidth(30);
@@ -130,6 +139,9 @@ public class Window extends Application {
         return row;
     }
 
+    /**
+     * Creates a coloured button with hover effects.
+     */
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setFont(Font.font("Pixels", 30));

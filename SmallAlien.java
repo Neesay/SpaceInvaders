@@ -8,4 +8,3 @@ public class SmallAlien extends Alien {
         super.points = 10;
     }
 }
-

@@ -29,7 +29,7 @@ public abstract class Alien extends Sprite {
         this.speed = 0.25;
         this.direction = 1;
     }
-    
+
     public int getPoints()
     {
         return this.points;
@@ -38,11 +38,11 @@ public abstract class Alien extends Sprite {
     public void move() {
         this.setX(this.getX() + (direction*this.speed));
     }
-    
+
     public boolean getDead(){
         return dead;
     }
-    
+
     public void setDead(){
         dead = true;
     }
@@ -54,11 +54,11 @@ public abstract class Alien extends Sprite {
     public void setRow(int row) {
         this.row = row;
     }
-    
+
     public void setDirection(double n){
         this.direction = n;
     }
-    
+
     public double getDirection(){
         return this.direction;
     }

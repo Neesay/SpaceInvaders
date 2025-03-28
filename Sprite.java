@@ -26,10 +26,10 @@ public class Sprite {
         this.width = width;
         this.pathFrames = pathFrames;
         this.image = new ImageView(new Image(pathFrames[0], this.width, this.height, false, true));
-        
+
         image.setFitWidth(width);
         image.setFitHeight(height);
-        image.setPreserveRatio(true);  
+        image.setPreserveRatio(true);
 
         image.setX(x);
         image.setY(y);
@@ -37,19 +37,19 @@ public class Sprite {
         // Create a rectangle for collision detection
         this.rect = new Rectangle(x, y, width, height);
     }
-    
+
     public double getX(){
         return this.x;
     }
-    
+
     public double getY(){
         return this.y;
     }
-    
+
     public int getHeight(){
         return this.height;
     }
-    
+
     public int getWidth(){
         return this.width;
     }
@@ -71,11 +71,11 @@ public class Sprite {
         this.rect.setY(y);
         image.setY(y);
     }
-    
+
     public ImageView getImgView(){
         return this.image;
     }
-    
+
     public Rectangle getRect(){
         return this.rect;
     }
@@ -89,5 +89,9 @@ public class Sprite {
      */
     public void setImg(String image) {
         this.image = new ImageView(new Image(image, this.width, this.height, false, true));
+    }
+
+    public Image getImage() {
+        return this.getImage();
     }
 }

@@ -61,12 +61,12 @@ public class AlienSwarm {
 
         for (Alien a: aliens){
             a.move();
-            
+
             if (now - lastShotTime >= shoot_interval){
                 aliensShoot(lasers);
                 lastShotTime = now;
             }
-            
+
             if (!(a.getDead())){
                 newAliens.add(a);
             }
@@ -76,7 +76,7 @@ public class AlienSwarm {
                 }
             }
         }
-        
+
         aliens = newAliens;
     }
 
@@ -124,7 +124,7 @@ public class AlienSwarm {
             }
         }
     }
-    
+
     private void spawnSpecialAlien(){
         if ((!(spec)) && rand.nextDouble() < 0.0005){
             String[] alienFrames = {"file:./images/SuperAlien.png", null};
@@ -144,15 +144,15 @@ public class AlienSwarm {
                 moveDownNext = true;
                 break;
             }
-            
+
         }
         if (moveDownNext) {
             for (Alien a : aliens) {
                 if (!(a instanceof SpecialAlien)){
                     a.setY(a.getY() + 20);
-                    a.setDirection(a.getDirection() * -1);    
+                    a.setDirection(a.getDirection() * -1);
                 }
-                
+
             }
             moveDownNext = false;
         }
@@ -169,7 +169,9 @@ public class AlienSwarm {
 
     private void switchAllAlienFrames() {
         for (Alien alien : this.getAliens()) {
-            alien.switchFrames();
+            if (!(alien instanceof SpecialAlien)){
+                alien.switchFrames();    
+            }
         }
     }
 }
