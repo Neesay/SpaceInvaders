@@ -1,4 +1,3 @@
-
 /**
  * A barrier that absorbs laser shots.
  *
