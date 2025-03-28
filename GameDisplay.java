@@ -110,7 +110,7 @@ public class GameDisplay {
 
         gc.setFill(Color.WHITE);
         gc.fillText("High Score: ", 400, 30);
-        gc.setFill(Color.YELLOW);
+        gc.setFill(Color.CYAN);
         gc.fillText(String.valueOf(bestScore), 600, 30);
 
 

@@ -90,7 +90,7 @@ public class Window extends Application {
         bestScoreLabel.setFont(pixelFont);
         bestScoreLabel.setTextFill(Color.CYAN);
         
-        menuBox = new VBox(20, titleImage, row1, row2, row3, row4, playButton, quitButton, bestScoreLabel);
+        menuBox = new VBox(20, titleImage, row1, row2, row3, row4, bestScoreLabel, playButton, quitButton);
         menuBox.setAlignment(javafx.geometry.Pos.CENTER);
         menuBox.setStyle("-fx-background-color: black;");
         menuBox.setPrefSize(WIDTH, HEIGHT);
