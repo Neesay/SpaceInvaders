@@ -10,7 +10,7 @@ Features at a glance 🛸
 * Alien speed ramps up as their numbers fall, faithful to the original’s rising tension
 * Scoreboard with in-session **best-score** tracker
 * Splash screen, game-over panel and one-click restart
-* 100 % vector-drawn, nothing to download; runs in < 650 LOC
+* 100% vector-drawn, nothing to download; runs in < 650 LOC
 
 ---
 
