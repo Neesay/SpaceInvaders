@@ -83,7 +83,7 @@ java --module-path "$PATH_TO_FX" \
 
 ## Running the Game
 
-1. A retro menu appears on launch—click **START** (or press **Enter**)
+1. A retro menu appears on launch: click **START** 
 2. Survive the alien onslaught and rack up points
 3. After *GAME OVER*, hit **BACK TO MENU** to try again
 
@@ -113,7 +113,7 @@ java --module-path "$PATH_TO_FX" \
 ├── GameDisplay.java      # JavaFX Canvas renderer + main loop
 ├── Laser.java            # Projectile objects
 ├── Player.java           # Cannon behaviour
-├── Window.java           # JavaFX Application / UI chrome
+├── Window.java           # JavaFX Application/UI chrome
 └── *.java (SmallAlien, MediumAlien, LargeAlien, SpecialAlien, Sprite)
 ```
 
